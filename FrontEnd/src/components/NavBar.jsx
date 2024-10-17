@@ -1,10 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import { BrowserRouter, Link, Routes, Route } from "react-router-dom";
 import MovesGallery from "./MovesGallery"
 import CompetitorsGallery from "./CompetitorsGallery";
 import RatingsGallery from "./RatingsGallery";
 
 function NavBar() {
+    const [selectedNavItem, setSelectedNavItem] = useState("moves");
+
+    function handleSignOut() {
+        
+    }
+
+    function handleProfile() {
+
+    }
+
     return (
         <BrowserRouter forceRefresh={true}>
         <header class="navBar p-3 mb-3 border-bottom">
@@ -15,14 +25,26 @@ function NavBar() {
                 </a>
 
                 <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                    <li class="nav-link px-2 link-secondary">
-                        <Link className="nav-link px-2 link-secondary" to="/moves">Moves</Link>
+                    <li class="nav-link px-2">
+                        <Link 
+                            onClick={() => setSelectedNavItem("moves")} 
+                            className={ selectedNavItem == "moves" ? "nav-link px-2 link-secondary" :  "nav-link px-2 link-body-emphasis" }  
+                            to="/moves"
+                        >Moves</Link>
                     </li>
-                    <li class="nav-link px-2 link-body-emphasis">
-                        <Link className="nav-link px-2 link-body-emphasis" to="/ratings">Ratings</Link>
+                    <li class="nav-link px-2">
+                        <Link 
+                            onClick={() => setSelectedNavItem("ratings")} 
+                            className={ selectedNavItem == "ratings" ? "nav-link px-2 link-secondary" :  "nav-link px-2 link-body-emphasis" }  
+                            to="/ratings"
+                        >Ratings</Link>
                     </li>
-                    <li class="nav-link px-2 link-body-emphasis">
-                        <Link className="nav-link px-2 link-body-emphasis" to="/competitors">Competitors</Link>
+                    <li class="nav-link px-2">
+                        <Link 
+                            onClick={() => setSelectedNavItem("competitors")} 
+                            className={ selectedNavItem == "competitors" ? "nav-link px-2 link-secondary" :  "nav-link px-2 link-body-emphasis" }  
+                            to="/competitors"
+                        >Competitors</Link>
                     </li>
                 </ul>
 
@@ -31,16 +53,16 @@ function NavBar() {
                     <img src="https://github.com/mdo.png" alt="mdo" width="50" height="50" class="rounded-circle" />
                 </a>
                 <ul class="dropdown-menu text-small" >
-                    <li><a class="dropdown-item" href="#">Profile</a></li>
+                    <li><button onClick={handleProfile} className="dropdown-item">Profile</button></li>
                     <li><hr class="dropdown-divider" /></li>
-                    <li><a class="dropdown-item" href="#">Sign out</a></li>
+                    <li><button onClick={handleSignOut} class="dropdown-item">Sign out</button></li>
                 </ul>
                 </div>
             </div>
             </div>
         </header>
         <Routes>
-            <Route exact path="/" />
+            <Route exact path="/" element={ <h1>Home Page</h1>}/>
             <Route path="/moves" element={ <MovesGallery /> } />
             <Route path="/ratings" element={ <RatingsGallery /> }/>
             <Route path="/competitors" element= { <CompetitorsGallery /> }/>

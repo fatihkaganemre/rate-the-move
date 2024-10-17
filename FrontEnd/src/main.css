@@ -1,3 +1,7 @@
+body {
+    background-color: #EEEEEE;
+}
+
 video {
     border-radius: 20px;
     float: right;
@@ -11,7 +15,7 @@ textarea {
 }
 
 .navBar {
-    background-color: #c59b08;
+    background-color: #FF8C32;
 }
 
 .logo {
@@ -60,7 +64,6 @@ textarea {
     margin-top: 20px;
     width: 200px;
 }
-
 
 /* MOVES GALLERY */
 
