@@ -33,6 +33,10 @@ textarea {
     gap: 50px;
 }
 
+#ratedStar {
+    color: #ffc700;
+}
+
 /* COMPETITORS GALLERY */
 .competitors-gallery {
     display: flex;
@@ -93,6 +97,11 @@ textarea {
     flex-direction: column;
     gap: 10px;
     width: 450px;
+}
+
+.my-comment {
+    color: rgb(159, 159, 159);
+    font-style: italic;
 }
 
 /* RATE */

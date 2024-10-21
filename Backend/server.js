@@ -20,71 +20,69 @@ app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
 
+const competitors = [
+    { id: 0, name: "Fatih Emre", level: 5, numberOfMoves: 12 },
+    { id: 1, name: "Maria Emre", level: 10, numberOfMoves: 24 }
+]
+
+var moves = [
+    { id: 2, title: "Crazy Move 3", description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.", videoURL: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" },
+    { id: 3, title: "Crazy Move 4", description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.", videoURL: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" }
+];
+
+var ratings = [
+    {                         
+        id: 0,
+        title: "Crazy Move 1",
+        description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+        comments: [{userId: 0, comment: "Good move, improve some part of it"}, {userId: 1, comment: "Good move, improve some part of it"}],
+        isRated: true,
+        rate: 3,
+        videoURL: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+    },
+    {                         
+        id: 1,
+        title: "Crazy Move 2",
+        description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+        comments: [{userId: 0, comment: "Good move, improve some part of it"}, {userId: 1, comment: "Good move, improve some part of it"}],
+        isRated: true,
+        rate: 5,
+        videoURL: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+    }
+];
+
+
 app.get("/getCompetitors", (req, res) => {
-    const competitors = [
-        { name: "Fatih Emre", level: 5, numberOfMoves: 12 },
-        { name: "Maria Emre", level: 10, numberOfMoves: 24 }
-    ]
     res.json({ competitors: competitors });
 });
 
 app.get("/getMoves", (req, res) => {
-    const moves = [
-        { title: "Crazy Move", description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.", videoURL: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" },
-        { title: "Crazy Move", description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.", videoURL: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" }
-    ]
     res.json({ moves: moves });
 });
 
 app.get("/getRatings", (req, res) => {
-    const ratings = [
-        {                         
-            title: "Crazy Move",
-            description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-            isRated: true,
-            rate: 3,
-            videoURL: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
-        },
-        {                         
-            title: "Crazy Move",
-            description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-            isRated: true,
-            rate: 5,
-            videoURL: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
-        }
-    ]
     res.json({ ratings: ratings });
 });
 
 app.post("/rate", async (req, res) => {
+    console.log(req.body);
     let id = req.body['id'];
     let rate = req.body['rate'];
     let comment = req.body['comment'];
 
-    if (id != null && rate != null && comment != null) {
-
+    if (id !== null && rate !== null && comment !== null) {
+        let newRating = moves.find( (move) => move.id === id ); 
+        newRating.rate = rate;
+        newRating.isRated = true;
+        newRating.comments = [{userId: 0, comment: comment}];
+        ratings.push(newRating);
+        moves = moves.filter( (move) => move.id === id);
         return res.json({ isRated: true })
     } else {
         return res.json({ error: "Bad request" })
     }
 })
 
-// app.post("/addNote", async (req, res) => {
-//   let title = req.body['title'];
-//   let content = req.body['content'];
-
-//   try {
-//     await db.query(
-//       "INSERT INTO notes (title, content) VALUES ($1, $2)",
-//       [title, content]
-//     );
-//     var result = await db.query( "SELECT id FROM notes WHERE title=$1", [title]);
-//     var id = result.rows[0];
-//     res.json({id: id})
-//   } catch (error) {
-//     res.json({ error: error });
-//   }
-// })
 
 // app.delete("/deleteNote", async (req, res) => {
 //   const noteId = req.body.id;

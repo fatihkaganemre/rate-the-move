@@ -1,17 +1,30 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Stars from "./Stars";
 
 function Move(props) {
+    function constructRatedStars() {
+        return [...Array(props.rate)].map((x) => <span className="fa fa-star checked" id="ratedStar" />) 
+    }
+
+    function handleFormChange(event) {
+        props.onMoveFormChange(event, props.id);
+    }
+
+    function handleSubmit(event) {
+        props.onSubmitRating(event, props.id);
+    }
+
     return (
         <div className="move">
-            <form className="move-form" action="submit">
+            <form onSubmit={handleSubmit} onChange={handleFormChange} className="move-form">
                 <h5>{props.title}</h5>
                 <h6>{props.description}</h6>
-                <Stars />
-                <textarea type="text" placeholder="Write something.." hidden={props.isRated}/>
-                <button type="submit" class="btn btn-primary" hidden={props.isRated}>Submit</button>
+                <div> { props.isRated ? constructRatedStars() : <Stars/> } </div>
+                <textarea type="text" placeholder="Write something.." hidden={props.isRated} name="comment"/>
+                <button type="submit" className="btn btn-primary" hidden={props.isRated}>Submit</button>
+                <div className="my-comment" hidden={!props.isRated}>Me: {props.comments && props.comments[0].comment}</div>
             </form>
-            <video width="320" height="240" controls>
+            <video width="320" controls>
                 <source src={props.videoURL} type="video/mp4" />
             </video>
         </div>

@@ -19,8 +19,8 @@ function CompetitorsGallery() {
             { competitors.map((competitor, index) => { 
                 return (
                     <Competitor 
-                        id={index} 
                         key={index}
+                        id={competitor.id} 
                         name={competitor.name}
                         level={competitor.level}
                         numberOfMoves={competitor.numberOfMoves}

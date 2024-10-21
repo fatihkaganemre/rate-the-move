@@ -20,12 +20,13 @@ function RatingsGallery() {
                 return (
                     <Move 
                         key={index} 
-                        id={index} 
+                        id={move.id} 
                         isRated={move.isRated}
                         rate={move.rate}
                         title={move.title} 
                         description={move.description} 
-                        videoURL={move.videoURL} 
+                        videoURL={move.videoURL}
+                        comments={move.comments}
                     />
                 );
             }) } 
