@@ -3,23 +3,24 @@ import Stars from "./Stars";
 
 function Move(props) {
     function constructRatedStars() {
-        return [...Array(props.rate)].map((x) => <span className="fa fa-star checked" id="ratedStar" />) 
-    }
-
-    function handleFormChange(event) {
-        props.onMoveFormChange(event, props.id);
+        return [...Array(props.rate)].map((x, index) => <span key={index} className="fa fa-star checked" id="ratedStar" />) 
     }
 
     function handleSubmit(event) {
         props.onSubmitRating(event, props.id);
     }
 
+    function handleRating(rate) {
+        props.onRated(rate, props.id);
+    }
+
     return (
         <div className="move">
-            <form onSubmit={handleSubmit} onChange={handleFormChange} className="move-form">
+            <form onSubmit={handleSubmit} className="move-form">
                 <h5>{props.title}</h5>
                 <h6>{props.description}</h6>
-                <div> { props.isRated ? constructRatedStars() : <Stars/> } </div>
+                <div class="move-date">{props.date}</div>
+                <div> { props.isRated ? constructRatedStars() : <Stars id={props.id} onRated={handleRating} /> } </div>
                 <textarea type="text" placeholder="Write something.." hidden={props.isRated} name="comment"/>
                 <button type="submit" className="btn btn-primary" hidden={props.isRated}>Submit</button>
                 <div className="my-comment" hidden={!props.isRated}>Me: {props.comments && props.comments[0].comment}</div>

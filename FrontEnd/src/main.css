@@ -104,6 +104,11 @@ textarea {
     font-style: italic;
 }
 
+.move-date {
+    font-weight: lighter;
+    font-style: italic;
+}
+
 /* RATE */
 
 .rate {

@@ -1,6 +1,5 @@
-import React, { useState, useEffect, FormEvent } from "react";
+import React, { useState, useEffect } from "react";
 import Move from "./Move";
-
 
 function MovesGallery() {
     const [moves, setMoves] = useState([]);
@@ -15,13 +14,10 @@ function MovesGallery() {
           .then(data => { setMoves(data.moves) });
     }
 
-    function handleFormChange(event, id) {
-        const { name, value } = event.target;
-        console.log(id);
-
+    function handleOnRated(rate, id) {
         setMoves(prevMoves => {
             return prevMoves.map((move, index) => {
-                return index === id ? { ...move, [name]: value } : move;
+                return index === id ? { ...move, ["rate"]: rate } : move;
             });
         });
     }
@@ -29,38 +25,39 @@ function MovesGallery() {
     function handleSubmitRating(event, id) {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
-        let rate = formData.get("rate");
+        let rate = Number(formData.get("rate"));
         let comment =  formData.get("comment");
 
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ id: id, rate: rate, comment: comment})
-          };
-      
-          fetch('/rate', requestOptions)
-          .then(response => response.json())
-          .then((response) => { 
+        };
+    
+        fetch('/rate', requestOptions)
+        .then(response => response.json())
+        .then((response) => { 
             if (response.isRated) {
                 setMoves( (prevMoves) => {
                     return prevMoves.filter((move) => move.id !== id);
                 })
             }
-          });
+        });
     } 
 
     return (
         <div className="moves-gallery">
-            { moves.map( (move, index) => { 
+            { moves.map( (move) => { 
                 return (
                     <Move 
-                        key={index} 
+                        key={move.id} 
                         id={move.id} 
                         title={move.title} 
                         description={move.description} 
+                        date={move.date}
                         videoURL={move.videoURL} 
-                        onMoveFormChange={handleFormChange}
-                        onSubmitRating={handleSubmitRating}
+                        onRated={handleOnRated}
+                        onSubmitRating={handleSubmitRating }
                     />
                 );
             }) } 

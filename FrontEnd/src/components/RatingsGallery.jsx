@@ -16,15 +16,16 @@ function RatingsGallery() {
 
     return (
         <div className="ratings-gallery">   
-            { ratings.map( (move, index) => { 
+            { ratings.map( (move) => { 
                 return (
                     <Move 
-                        key={index} 
+                        key={move.id} 
                         id={move.id} 
                         isRated={move.isRated}
                         rate={move.rate}
                         title={move.title} 
                         description={move.description} 
+                        date={move.date}
                         videoURL={move.videoURL}
                         comments={move.comments}
                     />
