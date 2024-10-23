@@ -1,21 +1,31 @@
 import React , { useState, useEffect } from "react";
 import Competitor from "./Competitor";
+import Loader from "./Loader";
 
 function CompetitorsGallery() {
     const [competitors, setCompetitors] = useState([]);
+    const [loaderHidden, setLoaderHidden] = useState(true);
 
     useEffect(() => {
         fetchCompetitors();
     }, []);
 
     function fetchCompetitors() {
+        setLoaderHidden(false);
+
         fetch('/getCompetitors') 
           .then(response => response.json())
-          .then(data => { setCompetitors(data.competitors) });
+          .then(data => { 
+            setCompetitors(data.competitors)
+            setLoaderHidden(true);
+         });
     }
 
     return (
-        <div className="competitors-gallery">
+        <div className="centered">
+            <Loader hidden={loaderHidden} />
+            <div hidden={!loaderHidden} className="competitors-gallery">
+            { competitors.length == 0 && <h1 hidden> No competitors yet.</h1>}
             { competitors.map((competitor, index) => { 
                 return (
                     <Competitor 
@@ -27,6 +37,7 @@ function CompetitorsGallery() {
                     />
                 );
             })}
+            </div>
         </div>
     )
 }

@@ -68,15 +68,23 @@ var ratings = [
 ];
 
 app.get("/getCompetitors", (req, res) => {
-    res.json({ competitors: competitors });
+    setTimeout(function(){
+        res.json({ competitors: competitors });
+   },2000);
 });
 
 app.get("/getMoves", (req, res) => {
-    res.json({ moves: moves });
+    setTimeout(function(){
+        res.json({ moves: moves });
+   },2000);
+
 });
 
 app.get("/getRatings", (req, res) => {
-    res.json({ ratings: ratings });
+    setTimeout(function(){
+        res.json({ ratings: ratings });
+   },2000);
+    
 });
 
 app.post("/rate", async (req, res) => {

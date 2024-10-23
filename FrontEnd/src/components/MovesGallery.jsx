@@ -1,17 +1,23 @@
 import React, { useState, useEffect } from "react";
 import Move from "./Move";
+import Loader from "./Loader";
 
 function MovesGallery() {
     const [moves, setMoves] = useState([]);
+    const [loaderHidden, setLoaderHidden] = useState(true);
 
     useEffect(() => {
         fetchMoves();
     }, []);
 
     function fetchMoves() {
+        setLoaderHidden(false)
         fetch('/getMoves') 
           .then(response => response.json())
-          .then(data => { setMoves(data.moves) });
+          .then(data => { 
+            setMoves(data.moves);
+            setLoaderHidden(true);
+         });
     }
 
     function handleOnRated(rate, id) {
@@ -46,21 +52,25 @@ function MovesGallery() {
     } 
 
     return (
-        <div className="moves-gallery">
-            { moves.map( (move) => { 
-                return (
-                    <Move 
-                        key={move.id} 
-                        id={move.id} 
-                        title={move.title} 
-                        description={move.description} 
-                        date={move.date}
-                        videoURL={move.videoURL} 
-                        onRated={handleOnRated}
-                        onSubmitRating={handleSubmitRating }
-                    />
-                );
-            }) } 
+        <div className="centered">
+            <Loader hidden={loaderHidden}/>
+            <div hidden={!loaderHidden} className="moves-gallery">
+                { moves.length == 0 && <h1> No new moves added.</h1>}
+                { moves.map( (move) => { 
+                    return (
+                        <Move 
+                            key={move.id} 
+                            id={move.id} 
+                            title={move.title} 
+                            description={move.description} 
+                            date={move.date}
+                            videoURL={move.videoURL} 
+                            onRated={handleOnRated}
+                            onSubmitRating={handleSubmitRating }
+                        />
+                    );
+                }) } 
+            </div>
         </div>
     )
 }
