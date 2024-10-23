@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Move from "./Move";
 import Loader from "./Loader";
+import SearchComponent from "./Search";
 
 function RatingsGallery() {
     const [ratings, setRatings] = useState([]);
@@ -21,7 +22,8 @@ function RatingsGallery() {
     }
 
     return (
-        <div className="centered"> 
+        <div className="centered-flex"> 
+            <SearchComponent placeholder="Search for rating..." />
             <Loader hidden={loaderHidden} />
             <div hidden={!loaderHidden} className="ratings-gallery">   
                 { ratings.length == 0 && <h1> No ratings yet.</h1>}

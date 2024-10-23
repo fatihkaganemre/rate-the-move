@@ -70,21 +70,20 @@ var ratings = [
 app.get("/getCompetitors", (req, res) => {
     setTimeout(function(){
         res.json({ competitors: competitors });
-   },2000);
+   },1000);
 });
 
 app.get("/getMoves", (req, res) => {
     setTimeout(function(){
         res.json({ moves: moves });
-   },2000);
+   },1000);
 
 });
 
 app.get("/getRatings", (req, res) => {
     setTimeout(function(){
         res.json({ ratings: ratings });
-   },2000);
-    
+   },1000);
 });
 
 app.post("/rate", async (req, res) => {

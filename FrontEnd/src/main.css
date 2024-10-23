@@ -4,7 +4,6 @@ body {
 
 video {
     border-radius: 20px;
-    float: right;
     width: 450px;
 }
 
@@ -24,9 +23,11 @@ textarea {
     border-radius: 10px;
 }
 
-.centered {
-    align-content: center;
-    text-align: center;
+.centered-flex {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 /* RATINGS GALLERY */
@@ -87,6 +88,8 @@ textarea {
 .move {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
     align-items: center;
     gap: 20px;
     margin: 20px;

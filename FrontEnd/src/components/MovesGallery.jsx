@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Move from "./Move";
 import Loader from "./Loader";
+import SearchComponent from "./Search";
 
 function MovesGallery() {
     const [moves, setMoves] = useState([]);
@@ -52,7 +53,8 @@ function MovesGallery() {
     } 
 
     return (
-        <div className="centered">
+        <div className="centered-flex">
+            <SearchComponent hidden={!loaderHidden || moves.length < 1} placeholder="Search for a move..."/>
             <Loader hidden={loaderHidden}/>
             <div hidden={!loaderHidden} className="moves-gallery">
                 { moves.length == 0 && <h1> No new moves added.</h1>}

@@ -1,6 +1,7 @@
 import React , { useState, useEffect } from "react";
 import Competitor from "./Competitor";
 import Loader from "./Loader";
+import SearchComponent from "./Search";
 
 function CompetitorsGallery() {
     const [competitors, setCompetitors] = useState([]);
@@ -22,7 +23,8 @@ function CompetitorsGallery() {
     }
 
     return (
-        <div className="centered">
+        <div className="centered-flex">
+            <SearchComponent placeholder="Search for competitor..." />
             <Loader hidden={loaderHidden} />
             <div hidden={!loaderHidden} className="competitors-gallery">
             { competitors.length == 0 && <h1 hidden> No competitors yet.</h1>}
