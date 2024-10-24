@@ -4,6 +4,7 @@ import cors from "cors";
 import env from "dotenv";
 import bodyParser from "body-parser";
 import { fileURLToPath } from 'url';
+import competitorsRoutes from './competitors.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -15,6 +16,7 @@ app.use(cors());
 // Serve the React app in production mode
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, '../Frontend/public')));
+app.use(competitorsRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
@@ -101,37 +103,4 @@ app.post("/rate", async (req, res) => {
             return res.status(400).json({ error: "Bad request" });
        },1000);
     }
-});
-
-
-/* COMPETITORS */
-
-const competitors = [
-    { id: 2, name: "Fatih Emre", level: 5, numberOfMoves: 12 },
-    { id: 3, name: "Maria Emre", level: 10, numberOfMoves: 24 },
-    { id: 4, name: "Maciej Drazewski", level: 10, numberOfMoves: 24 },
-    { id: 5, name: "Hubert Kaczamarek", level: 10, numberOfMoves: 24 },
-    { id: 6, name: "Arek Kwaszniweski", level: 10, numberOfMoves: 24 }
-];
-
-const addedCompetitors = [
-    { id: 2, name: "Fatih Emre", level: 5, numberOfMoves: 12 },
-    { id: 3, name: "Maria Emre", level: 10, numberOfMoves: 24 },
-];
-
-app.get("/getAddedCompetitors", (req, res) => {
-    setTimeout(function() {
-        res.json({ competitors: addedCompetitors });
-   },1000);
-});
-
-app.get("/searchCompetitors", (req, res) => {
-    const query = req.query.q; // Get the search query parameter (e.g., ?q=somevalue)
-    const notAddedCompetitors = competitors.filter(competitor => 
-        !addedCompetitors.some(added => added.id === competitor.id)
-    );
-    const filteredCompetitors = notAddedCompetitors.filter(competitor =>
-        competitor.name.toLowerCase().includes(query.toLowerCase())
-    );
-    res.json({ competitors: filteredCompetitors });
 });
