@@ -1,46 +1,43 @@
 import React, { useState } from "react";
 
-// Example data (replace this with your data source)
-const items = [
-    { id: 1, name: "Inception" },
-    { id: 2, name: "Interstellar" },
-    { id: 3, name: "The Dark Knight" },
-    { id: 4, name: "Memento" },
-    { id: 5, name: "Tenet" }
-];
-
 function SearchComponent(props) {
-    const [query, setQuery] = useState("");
+    const [isItemsHidden, setItemsHidden] = useState(true);
 
-    // Filter items based on the search query
-    const filteredItems = items.filter((item) =>
-        item.name.toLowerCase().includes(query.toLowerCase())
-    );
+    function handleOnChange(event) {
+        const query = event.target.value;
+        props.onQuery(query);
+        setItemsHidden((query.length === 0));
+    }
+
+    function handleOnAdd(id) {
+        props.onAdd(id);
+    };
 
     return (
         <div hidden={props.hidden} style={styles.wrapper}>
             <div style={styles.searchContainer}>
                 <input
                     type="text"
-                    value={query}
-                    onChange={(e) => setQuery(e.target.value)}
+                    value={props.query}
+                    onChange={handleOnChange}
                     placeholder={props.placeholder}
                     style={styles.searchInput}
                 />
 
-                {query && (
+                { (props.items && !isItemsHidden) && (
                     <ul style={styles.searchResults}>
-                        {filteredItems.length > 0 ? (
-                            filteredItems.map((item) => (
+                        {props.items.length > 0 ? (
+                            props.items.map((item) => (
                                 <li key={item.id} style={styles.listItem}>
                                     {item.name}
+                                    <button onClick={ () => handleOnAdd(item.id) } className="btn btn-primary" style={styles.addButton}>Add</button>
                                 </li>
                             ))
                         ) : (
                             <li style={styles.noResult}>No results found</li>
                         )}
                     </ul>
-                )}
+                ) }
             </div>
         </div>
     );
@@ -70,6 +67,7 @@ const styles = {
         position: "absolute",
         width: "100%",
         backgroundColor: "#fff",
+        borderRadius: "10px",
         border: "1px solid #ddd",
         maxHeight: "200px",
         overflowY: "auto",
@@ -101,6 +99,9 @@ const styles = {
         fontSize: "24px",
         marginBottom: "10px",
         color: "#333",
+    },
+    addButton: {
+        marginLeft: "20px",
     },
 };
 

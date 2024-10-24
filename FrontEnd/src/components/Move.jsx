@@ -16,13 +16,13 @@ function Move(props) {
 
     return (
         <div className="move">
-            <form onSubmit={handleSubmit} className="move-form">
+            <form disabled={props.isSubmitting} onSubmit={handleSubmit} className="move-form">
                 <h5>{props.title}</h5>
                 <h6>{props.description}</h6>
-                <div class="move-date">{props.date}</div>
+                <div className="move-date">{props.date}</div>
                 <div> { props.isRated ? constructRatedStars() : <Stars id={props.id} onRated={handleRating} /> } </div>
                 <textarea type="text" placeholder="Write something.." hidden={props.isRated} name="comment"/>
-                <button type="submit" className="btn btn-primary" hidden={props.isRated}>Submit</button>
+                <button disabled={props.isSubmitting} type="submit" className="btn btn-primary" hidden={props.isRated}>Submit</button>
                 <div className="my-comment" hidden={!props.isRated}>Me: {props.comments && props.comments[0].comment}</div>
             </form>
             <video width="320" controls>

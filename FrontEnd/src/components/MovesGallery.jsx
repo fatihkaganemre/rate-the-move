@@ -5,32 +5,37 @@ import SearchComponent from "./Search";
 
 function MovesGallery() {
     const [moves, setMoves] = useState([]);
-    const [loaderHidden, setLoaderHidden] = useState(true);
+    const [filteredMoves, setFilteredMoves] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     useEffect(() => {
         fetchMoves();
     }, []);
 
     function fetchMoves() {
-        setLoaderHidden(false)
+        setIsLoading(true)
         fetch('/getMoves') 
-          .then(response => response.json())
-          .then(data => { 
-            setMoves(data.moves);
-            setLoaderHidden(true);
-         });
+            .then(response => response.json())
+            .then(data => { 
+                if (data.moves.length > 0) {
+                    setMoves(data.moves);
+                    setFilteredMoves(data.moves);
+                };
+                setIsLoading(false)
+            })
+            .catch((error) => alert(error.message))
     }
 
     function handleOnRated(rate, id) {
         setMoves(prevMoves => {
-            return prevMoves.map((move, index) => {
-                return index === id ? { ...move, ["rate"]: rate } : move;
-            });
+            return prevMoves.map((move) => { return move.id === id ? { ...move, rate } : move });
         });
     }
 
     function handleSubmitRating(event, id) {
         event.preventDefault();
+        setIsSubmitting(true);
         const formData = new FormData(event.currentTarget);
         let rate = Number(formData.get("rate"));
         let comment =  formData.get("comment");
@@ -42,23 +47,36 @@ function MovesGallery() {
         };
     
         fetch('/rate', requestOptions)
-        .then(response => response.json())
-        .then((response) => { 
-            if (response.isRated) {
-                setMoves( (prevMoves) => {
-                    return prevMoves.filter((move) => move.id !== id);
-                })
-            }
-        });
+            .then(response => response.json())
+            .then(() => { 
+                setMoves( (prevMoves) => { 
+                    const newMoves = prevMoves.filter((move) => move.id !== id);
+                    setFilteredMoves(newMoves);
+                    return newMoves
+                });
+                
+                setIsSubmitting(false);
+            })
+            .catch((error) => alert(error.message))
     } 
+
+    function handleSearch(query) {
+        const lowercasedQuery = query.toLowerCase();
+        const filtered = moves.filter(move => move.title.toLowerCase().includes(lowercasedQuery));
+        setFilteredMoves(filtered);
+    };
 
     return (
         <div className="centered-flex">
-            <SearchComponent hidden={!loaderHidden || moves.length < 1} placeholder="Search for a move..."/>
-            <Loader hidden={loaderHidden}/>
-            <div hidden={!loaderHidden} className="moves-gallery">
-                { moves.length == 0 && <h1> No new moves added.</h1>}
-                { moves.map( (move) => { 
+            <SearchComponent 
+                hidden={isLoading || moves.length === 0} 
+                placeholder="Search for a move..."
+                onQuery={handleSearch}
+            />
+            <Loader hidden={!isLoading}/>
+            {!isLoading && moves.length === 0 && <h1>No moves found!</h1>}
+            <div className="moves-gallery" d>
+                { filteredMoves.map( (move) => { 
                     return (
                         <Move 
                             key={move.id} 
@@ -68,7 +86,8 @@ function MovesGallery() {
                             date={move.date}
                             videoURL={move.videoURL} 
                             onRated={handleOnRated}
-                            onSubmitRating={handleSubmitRating }
+                            onSubmitRating={handleSubmitRating}
+                            isSubmitting={isSubmitting}
                         />
                     );
                 }) } 

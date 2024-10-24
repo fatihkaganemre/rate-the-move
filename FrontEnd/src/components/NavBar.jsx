@@ -25,21 +25,21 @@ function NavBar() {
                     <li className="nav-link px-2">
                         <Link 
                             onClick={() => setSelectedNavItem("moves")} 
-                            className={ selectedNavItem == "moves" ? "nav-link px-2 link-secondary" :  "nav-link px-2 link-body-emphasis" }  
+                            className={ selectedNavItem === "moves" ? "nav-link px-2 link-secondary" :  "nav-link px-2 link-body-emphasis" }  
                             to="/moves"
                         >Moves</Link>
                     </li>
                     <li className="nav-link px-2">
                         <Link 
                             onClick={() => setSelectedNavItem("ratings")} 
-                            className={ selectedNavItem == "ratings" ? "nav-link px-2 link-secondary" :  "nav-link px-2 link-body-emphasis" }  
+                            className={ selectedNavItem === "ratings" ? "nav-link px-2 link-secondary" :  "nav-link px-2 link-body-emphasis" }  
                             to="/ratings"
                         >Ratings</Link>
                     </li>
                     <li className="nav-link px-2">
                         <Link 
                             onClick={() => setSelectedNavItem("competitors")} 
-                            className={ selectedNavItem == "competitors" ? "nav-link px-2 link-secondary" :  "nav-link px-2 link-body-emphasis" }  
+                            className={ selectedNavItem === "competitors" ? "nav-link px-2 link-secondary" :  "nav-link px-2 link-body-emphasis" }  
                             to="/competitors"
                         >Competitors</Link>
                     </li>

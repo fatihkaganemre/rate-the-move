@@ -20,11 +20,6 @@ app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
 
-const competitors = [
-    { id: 0, name: "Fatih Emre", level: 5, numberOfMoves: 12 },
-    { id: 1, name: "Maria Emre", level: 10, numberOfMoves: 24 }
-];
-
 const exampleDate = new Date("October 13, 2014 11:13:00");
 
 var moves = [
@@ -67,21 +62,15 @@ var ratings = [
     }
 ];
 
-app.get("/getCompetitors", (req, res) => {
-    setTimeout(function(){
-        res.json({ competitors: competitors });
-   },1000);
-});
-
 app.get("/getMoves", (req, res) => {
-    setTimeout(function(){
+    setTimeout(function() {
         res.json({ moves: moves });
    },1000);
 
 });
 
 app.get("/getRatings", (req, res) => {
-    setTimeout(function(){
+    setTimeout(function() {
         res.json({ ratings: ratings });
    },1000);
 });
@@ -92,7 +81,7 @@ app.post("/rate", async (req, res) => {
     let rate = req.body['rate'];
     let comment = req.body['comment'];
 
-    if (id !== null && rate !== null && comment !== null) {
+    if (id !== null && rate !== null && comment !== null && rate !== 0 && rate <= 5) {
         let newRating = moves.find( (move) => move.id === id ); 
         if (!newRating) {
             return res.status(404).json({ error: "Movie not found" });
@@ -103,8 +92,46 @@ app.post("/rate", async (req, res) => {
         newRating.comments = [{userId: 0, comment: comment}];
         ratings.push(newRating);
         moves = moves.filter( (move) => move.id !== id);
-        return res.json({ isRated: true })
+
+        setTimeout(function() {
+            return res.status(200).json({ message: "Rating submitted successfully" });
+       },1000);
     } else {
-        return res.status(400).json({ error: "Bad request" });
+        setTimeout(function() {
+            return res.status(400).json({ error: "Bad request" });
+       },1000);
     }
+});
+
+
+/* COMPETITORS */
+
+const competitors = [
+    { id: 2, name: "Fatih Emre", level: 5, numberOfMoves: 12 },
+    { id: 3, name: "Maria Emre", level: 10, numberOfMoves: 24 },
+    { id: 4, name: "Maciej Drazewski", level: 10, numberOfMoves: 24 },
+    { id: 5, name: "Hubert Kaczamarek", level: 10, numberOfMoves: 24 },
+    { id: 6, name: "Arek Kwaszniweski", level: 10, numberOfMoves: 24 }
+];
+
+const addedCompetitors = [
+    { id: 2, name: "Fatih Emre", level: 5, numberOfMoves: 12 },
+    { id: 3, name: "Maria Emre", level: 10, numberOfMoves: 24 },
+];
+
+app.get("/getAddedCompetitors", (req, res) => {
+    setTimeout(function() {
+        res.json({ competitors: addedCompetitors });
+   },1000);
+});
+
+app.get("/searchCompetitors", (req, res) => {
+    const query = req.query.q; // Get the search query parameter (e.g., ?q=somevalue)
+    const notAddedCompetitors = competitors.filter(competitor => 
+        !addedCompetitors.some(added => added.id === competitor.id)
+    );
+    const filteredCompetitors = notAddedCompetitors.filter(competitor =>
+        competitor.name.toLowerCase().includes(query.toLowerCase())
+    );
+    res.json({ competitors: filteredCompetitors });
 });
