@@ -8,7 +8,7 @@ function CompetitorsGallery() {
     const [loaderHidden, setLoaderHidden] = useState(true);
     const [searchedCompetitors, setSearchedCompetitors] = useState([]);
     const [title, setTitle] = useState("");
-    const [isAdding, setIsAdding] = useState(false);
+    const [addingItemId, setAddingItemId] = useState(null);
 
     useEffect(() => {
         fetchCompetitors();
@@ -43,7 +43,7 @@ function CompetitorsGallery() {
 
     async function handleOnAdd(id) {
         try {
-            setIsAdding(true);
+            setAddingItemId(id);
             const response = await fetch(`/addCompetitor?id=${encodeURIComponent(id)}`);
             
             if (!response.ok) {
@@ -56,7 +56,7 @@ function CompetitorsGallery() {
         } catch (error) {
             alert(error.message);
         } finally {
-            setIsAdding(false);
+            setAddingItemId(null);
         }
     }
 
@@ -66,7 +66,7 @@ function CompetitorsGallery() {
                 placeholder="Search for new competitor..."
                 onQuery={handleSearch}
                 onAdd={handleOnAdd}
-                isAdding={isAdding}
+                addingItemId={addingItemId}
                 items={searchedCompetitors}
             />
             <Loader hidden={loaderHidden} />
