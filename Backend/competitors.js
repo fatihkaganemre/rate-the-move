@@ -8,7 +8,7 @@ export const competitors = [
     { id: 6, name: "Arek Kwaszniweski", level: 10, numberOfMoves: 24 }
 ];
 
-export const addedCompetitors = [
+export var addedCompetitors = [
     { id: 2, name: "Fatih Emre", level: 5, numberOfMoves: 12 },
     { id: 3, name: "Maria Emre", level: 10, numberOfMoves: 24 },
 ];
@@ -33,6 +33,27 @@ router.get("/searchCompetitors", (req, res) => {
         competitor.name.toLowerCase().includes(query.toLowerCase())
     );
     res.json({ competitors: filteredCompetitors });
+});
+
+router.get("/addCompetitor", (req, res) => {
+    const id = parseInt(req.query.id, 10);  // Convert id to an integer
+    const exists = addedCompetitors.some(competitor => competitor.id === id);
+    
+    if (exists) { 
+        return res.status(200).json({ message: "Competitor already added" });
+    }
+    
+    const newCompetitor = competitors.find(c => c.id === id);
+    console.log(newCompetitor);
+    
+    if (newCompetitor) {
+        addedCompetitors.push(newCompetitor);
+        setTimeout(function() {
+            res.status(200).json({ message: "Competitor added successfully" });
+        }, 1000);
+    } else {
+        res.status(404).json({ message: "Competitor not found" });
+    }
 });
 
 export default router;

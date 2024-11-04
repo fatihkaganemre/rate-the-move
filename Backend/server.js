@@ -27,6 +27,7 @@ const exampleDate = new Date("October 13, 2014 11:13:00");
 var moves = [
     { 
         id: 2, 
+        user: {id: 1, name: "Fatih Emre", image: "https://github.com/mdo.png"},
         title: "Crazy Move 3", 
         description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.", 
         date: exampleDate.toLocaleDateString(),
@@ -34,6 +35,7 @@ var moves = [
     },
     { 
         id: 3, 
+        user: {id: 1, name: "Fatih Emre", image: "https://github.com/mdo.png"},
         title: "Crazy Move 4", 
         description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.", 
         date: exampleDate.toLocaleDateString(),
@@ -44,6 +46,7 @@ var moves = [
 var ratings = [
     {                         
         id: 0,
+        user: {id: 1, name: "Fatih Emre", image: "https://github.com/mdo.png"},
         title: "Crazy Move 1",
         description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
         date: exampleDate.toLocaleDateString(),
@@ -54,6 +57,7 @@ var ratings = [
     },
     {                         
         id: 1,
+        user: {id: 1, name: "Fatih Emre", image: "https://github.com/mdo.png"},
         title: "Crazy Move 2",
         description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
         date: exampleDate.toLocaleDateString(),
@@ -103,4 +107,8 @@ app.post("/rate", async (req, res) => {
             return res.status(400).json({ error: "Bad request" });
        },1000);
     }
+});
+
+app.post( "/login", (req, res) => {
+    console.log(res.body);
 });

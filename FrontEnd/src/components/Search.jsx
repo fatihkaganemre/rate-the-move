@@ -30,7 +30,7 @@ function SearchComponent(props) {
                             props.items.map((item) => (
                                 <li key={item.id} style={styles.listItem}>
                                     {item.name}
-                                    <button onClick={ () => handleOnAdd(item.id) } className="btn btn-primary" style={styles.addButton}>Add</button>
+                                    <button disabled={props.isAdding} onClick={ () => handleOnAdd(item.id) } className="btn btn-primary" style={styles.addButton}>Add</button>
                                 </li>
                             ))
                         ) : (

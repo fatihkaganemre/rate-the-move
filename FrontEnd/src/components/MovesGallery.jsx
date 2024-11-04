@@ -81,6 +81,8 @@ function MovesGallery() {
                         <Move 
                             key={move.id} 
                             id={move.id} 
+                            userName= {move.user.name}
+                            userImage= {move.user.image}
                             title={move.title} 
                             description={move.description} 
                             date={move.date}

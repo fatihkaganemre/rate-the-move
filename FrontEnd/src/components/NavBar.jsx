@@ -1,8 +1,5 @@
 import React, { useState } from "react";
-import { BrowserRouter, Link, Routes, Route } from "react-router-dom";
-import MovesGallery from "./MovesGallery"
-import CompetitorsGallery from "./CompetitorsGallery";
-import RatingsGallery from "./RatingsGallery";
+import { Link } from "react-router-dom";
 
 function NavBar() {
     const [selectedNavItem, setSelectedNavItem] = useState("moves");
@@ -16,7 +13,6 @@ function NavBar() {
     }
 
     return (
-        <BrowserRouter forceRefresh={false}>
         <header className="navBar p-3 mb-3 border-bottom">
             <div className="container">
             <div className="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
@@ -58,12 +54,6 @@ function NavBar() {
             </div>
             </div>
         </header>
-        <Routes>
-            <Route path="/moves" element={ <MovesGallery /> } />
-            <Route path="/ratings" element={ <RatingsGallery /> }/>
-            <Route path="/competitors" element= { <CompetitorsGallery /> }/>
-        </Routes>
-        </BrowserRouter>
     )
 };
 

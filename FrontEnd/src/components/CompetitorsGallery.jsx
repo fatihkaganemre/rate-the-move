@@ -8,6 +8,7 @@ function CompetitorsGallery() {
     const [loaderHidden, setLoaderHidden] = useState(true);
     const [searchedCompetitors, setSearchedCompetitors] = useState([]);
     const [title, setTitle] = useState("");
+    const [isAdding, setIsAdding] = useState(false);
 
     useEffect(() => {
         fetchCompetitors();
@@ -37,13 +38,12 @@ function CompetitorsGallery() {
             data.competitors.length === 0 ? setTitle("No competitors found") : setSearchedCompetitors(data.competitors);
         } catch (error) {
             alert(error.message);
-        } finally {
-            //setLoading(false);         // Stop loading
         }
     };
 
     async function handleOnAdd(id) {
         try {
+            setIsAdding(true);
             const response = await fetch(`/addCompetitor?id=${encodeURIComponent(id)}`);
             
             if (!response.ok) {
@@ -51,11 +51,12 @@ function CompetitorsGallery() {
             } else {
                 const addedCompetitor = searchedCompetitors.find((competitor) => competitor.id === id);
                 setCompetitors( (prevCompetitors) => { return [...prevCompetitors, addedCompetitor]})
+                setSearchedCompetitors(prevCompetitors => prevCompetitors.filter( c => c.id !== addedCompetitor.id))
             }
         } catch (error) {
-            setTitle(error.message)
+            alert(error.message);
         } finally {
-            //setLoading(false);         // Stop loading
+            setIsAdding(false);
         }
     }
 
@@ -65,6 +66,7 @@ function CompetitorsGallery() {
                 placeholder="Search for new competitor..."
                 onQuery={handleSearch}
                 onAdd={handleOnAdd}
+                isAdding={isAdding}
                 items={searchedCompetitors}
             />
             <Loader hidden={loaderHidden} />

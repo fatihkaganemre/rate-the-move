@@ -44,6 +44,8 @@ function RatingsGallery() {
                         <Move 
                             key={move.id} 
                             id={move.id} 
+                            userName={move.user.name}
+                            userImage={move.user.image}
                             isRated={move.isRated}
                             rate={move.rate}
                             title={move.title} 
