@@ -1,12 +1,8 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
-function NavBar() {
+function NavBar(props) {
     const [selectedNavItem, setSelectedNavItem] = useState("moves");
-
-    function handleSignOut() {
-        
-    }
 
     function handleProfile() {
 
@@ -48,7 +44,7 @@ function NavBar() {
                 <ul className="dropdown-menu text-small" >
                     <li><button onClick={handleProfile} className="dropdown-item">Profile</button></li>
                     <li><hr className="dropdown-divider" /></li>
-                    <li><button onClick={handleSignOut} className="dropdown-item">Sign out</button></li>
+                    <li><button onClick={props.onSignOut} className="dropdown-item">Sign out</button></li>
                 </ul>
                 </div>
             </div>

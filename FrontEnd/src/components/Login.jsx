@@ -2,22 +2,27 @@ import React, { useState } from "react";
 import ToggleSwitch from "./ToggleSwitch";
 
 function Login(props) {
-    const [input, setInput] = useState();
+    const [input, setInput] = useState({});
 
-    function onSubmit() {
-
+    function handleLogin(event) {
+        event.preventDefault();
+        props.onLogin(input);
     }
 
     const handleToggleChange = (selectedOption) => {
-        input['option'] = selectedOption;
+        setInput(prevInput => ({
+            ...prevInput,
+            option: selectedOption
+        }));
     };
 
     function handleOnChange(event) {
         const { name, value } = event.target;
-        input[name] = value;
-    
-        console.log(input);
-    }
+        setInput(prevInput => ({
+            ...prevInput,
+            [name]: value
+        }));
+    };
 
     return (
         <div className="container mt-5">
@@ -30,7 +35,7 @@ function Login(props) {
                             <form onChange={handleOnChange}>
                                 <div className="form-group">
                                     <label htmlFor="email">Email</label>
-                                    <input type="email" className="form-control" name="username" placeholder="Enter email"/>
+                                    <input type="email" className="form-control" name="email" placeholder="Enter email"/>
                                 </div>
                                 <div className="form-group">
                                     <label htmlFor="password">Password</label>
@@ -44,7 +49,7 @@ function Login(props) {
                                     <label htmlFor="teamName">Team name</label>
                                     <input type="text" className="form-control" name="teamName" placeholder="Enter team name"/>
                                 </div>
-                                <button onClick={onSubmit} type="submit" className="btn btn-dark">Login</button>
+                                <button onClick={handleLogin} className="btn btn-dark">Login</button>
                             </form>
                         </div>
                     </div>
