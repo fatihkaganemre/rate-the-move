@@ -7,15 +7,35 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from './Login';
 
 function App() {
-  const [isLoggedIn, setLoggedIn] = useState(true);
+  const [isLoggedIn, setLoggedIn] = useState(false);
 
   function handleSignOut() {
-    setLoggedIn(false);
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' }
+    };
+
+    fetch('/logout', requestOptions)
+      .then(response => response.json())
+      .then(() => { 
+        setLoggedIn(false);
+      })
+      .catch((error) => alert(error.message))
   }
 
   function handleLogin(input) {
-    console.log(input);
-    setLoggedIn(true);
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ input: input })
+    };
+
+    fetch('/login', requestOptions)
+      .then(response => response.json())
+      .then(() => { 
+        setLoggedIn(true);
+      })
+      .catch((error) => alert(error.message))
   }
 
   return (

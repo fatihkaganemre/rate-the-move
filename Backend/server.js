@@ -1,22 +1,25 @@
 import express from "express";
+import passport from "passport";
 import path, { dirname }  from "path";
 import cors from "cors";
 import env from "dotenv";
 import bodyParser from "body-parser";
 import { fileURLToPath } from 'url';
 import competitorsRoutes from './competitors.js';
+import authenticationRoutes from './authentication.js'
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 3001;
 env.config();
-app.use(cors());
 
 // Serve the React app in production mode
+app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, '../Frontend/public')));
 app.use(competitorsRoutes);
+app.use(authenticationRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
@@ -107,8 +110,4 @@ app.post("/rate", async (req, res) => {
             return res.status(400).json({ error: "Bad request" });
        },1000);
     }
-});
-
-app.post( "/login", (req, res) => {
-    console.log(res.body);
 });
