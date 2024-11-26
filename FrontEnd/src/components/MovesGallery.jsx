@@ -75,7 +75,7 @@ function MovesGallery() {
             />
             <Loader hidden={!isLoading}/>
             {!isLoading && moves.length === 0 && <h1>No moves found!</h1>}
-            <div className="moves-gallery" d>
+            <div className="moves-gallery">
                 { filteredMoves.map( (move) => { 
                     return (
                         <Move 

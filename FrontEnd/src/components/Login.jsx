@@ -4,10 +4,10 @@ import ToggleSwitch from "./ToggleSwitch";
 function Login(props) {
     const [input, setInput] = useState({});
 
-    function handleLogin(event) {
+    const onSubmit = (event) => {
         event.preventDefault();
         props.onLogin(input);
-    }
+    };
 
     const handleToggleChange = (selectedOption) => {
         setInput(prevInput => ({
@@ -32,24 +32,23 @@ function Login(props) {
                 <div className="col-sm-8">
                     <div style={styles.loginCard} className="card">
                         <div className="card-body">
-                            <form onChange={handleOnChange}>
+                            <form onChange={handleOnChange} onSubmit={onSubmit}>
                                 <div className="form-group">
                                     <label htmlFor="email">Email</label>
-                                    <input type="email" className="form-control" name="email" placeholder="Enter email"/>
+                                    <input id="email" type="email" className="form-control" name="email" placeholder="Enter email" autoComplete="on" required/>
                                 </div>
                                 <div className="form-group">
                                     <label htmlFor="password">Password</label>
-                                    <input type="password" className="form-control" name="password" placeholder="Enter password"/>
+                                    <input id="password"  type="password" className="form-control" name="password" placeholder="Enter password" autoComplete="on" required/>
                                 </div>
                                 <div className="form-group">
-                                    <label htmlFor="switch">Login as</label>
                                     <ToggleSwitch optionA="Coach" optionB="Competitor" onChange={handleToggleChange} />
                                 </div>
                                 <div className="form-group">
                                     <label htmlFor="teamName">Team name</label>
-                                    <input type="text" className="form-control" name="teamName" placeholder="Enter team name"/>
+                                    <input id="teamName" type="text" className="form-control" name="teamName" placeholder="Enter team name" autoComplete="on" required/>
                                 </div>
-                                <button onClick={handleLogin} className="btn btn-dark">Login</button>
+                                <input type="submit" value="Login" className="btn btn-dark"/>
                             </form>
                         </div>
                     </div>

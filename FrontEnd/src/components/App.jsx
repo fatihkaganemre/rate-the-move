@@ -3,11 +3,12 @@ import React, { useState } from 'react';
 import MovesGallery from "./MovesGallery"
 import CompetitorsGallery from "./CompetitorsGallery";
 import RatingsGallery from "./RatingsGallery";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import Login from './Login';
 
 function App() {
   const [isLoggedIn, setLoggedIn] = useState(false);
+  const navigate = useNavigate();
 
   function handleSignOut() {
     const requestOptions = {
@@ -19,6 +20,7 @@ function App() {
       .then(response => response.json())
       .then(() => { 
         setLoggedIn(false);
+        navigate("/");
       })
       .catch((error) => alert(error.message))
   }
@@ -34,6 +36,7 @@ function App() {
       .then(response => response.json())
       .then(() => { 
         setLoggedIn(true);
+        navigate("/moves");
       })
       .catch((error) => alert(error.message))
   }
@@ -41,14 +44,14 @@ function App() {
   return (
     <div>
       { isLoggedIn ? 
-      (<BrowserRouter forceRefresh={false}>
+      (<div>
         <NavBar onSignOut={handleSignOut} />
         <Routes>
           <Route path="/moves" element={ <MovesGallery /> } />
           <Route path="/ratings" element={ <RatingsGallery /> }/>
           <Route path="/competitors" element= { <CompetitorsGallery /> }/>
         </Routes>
-      </BrowserRouter>) : <Login onLogin={handleLogin} /> }
+        </div>) : <Login onLogin={handleLogin} /> }
     </div>
   );
 }
