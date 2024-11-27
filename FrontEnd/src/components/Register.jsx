@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import ToggleSwitch from "./ToggleSwitch";
 
-function Login(props) {
+function Register(props) {
     const [input, setInput] = useState({});
 
     const onSubmit = (event) => {
         event.preventDefault();
-        props.onSubmit(input);
+        props.onRegister(input);
     };
 
     function handleOnChange(event) {
@@ -17,9 +17,16 @@ function Login(props) {
         }));
     };
 
+    const handleToggleChange = (selectedOption) => {
+        setInput(prevInput => ({
+            ...prevInput,
+            option: selectedOption
+        }));
+    };
+
     return (
         <div className="container mt-5">
-            <h1 style={styles.title}>Login</h1>
+            <h1 style={styles.title}>Register</h1>
     
             <div className="row">
                 <div className="col-sm-8">
@@ -34,21 +41,19 @@ function Login(props) {
                                     <label htmlFor="password">Password</label>
                                     <input id="password"  type="password" className="form-control" name="password" placeholder="Enter password" autoComplete="on" required/>
                                 </div>
-                                <div style={styles.loginRegister}>
-                                    <input type="submit" value="Login" className="btn btn-dark"/>
-                                    <button onClick={props.onRegister} className="btn btn-light">Register</button>
+                                <div className="form-group">
+                                    <label htmlFor="switch">Login as</label>
+                                    <ToggleSwitch optionA="Coach" optionB="Competitor" onChange={handleToggleChange} />
+                                </div>
+                                <div className="form-group">
+                                    <label htmlFor="teamName">Team name</label>
+                                    <input id="teamName" type="text" className="form-control" name="teamName" placeholder="Enter team name" autoComplete="on" required/>
+                                </div>
+                                <div style={styles.loginRegister} className="form-group">
+                                    <input type="submit" value="Register" className="btn btn-dark"/>
+                                    <button className="btn btn-light" onClick={props.onCancel}>Cancel</button>
                                 </div>
                             </form>
-                        </div>
-                    </div>
-                </div>
-        
-                <div className="col-sm-4">
-                    <div className="card">
-                        <div className="card-body">
-                            <a className="btn btn-block" href="/auth/google" role="button">
-                                <i className="fab fa-google"> Sign In with Google </i>
-                            </a>
                         </div>
                     </div>
                 </div>
@@ -73,4 +78,4 @@ const styles = {
     }
 }
 
-export default Login;
+export default Register;

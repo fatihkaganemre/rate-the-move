@@ -4,10 +4,6 @@ import { Link } from "react-router-dom";
 function NavBar(props) {
     const [selectedNavItem, setSelectedNavItem] = useState("moves");
 
-    function handleProfile() {
-
-    }
-
     return (
         <header className="navBar p-3 mb-3 border-bottom">
             <div className="container">
@@ -42,7 +38,7 @@ function NavBar(props) {
                     <img src="https://github.com/mdo.png" alt="mdo" width="50" height="50" className="rounded-circle" />
                 </a>
                 <ul className="dropdown-menu text-small" >
-                    <li><button onClick={handleProfile} className="dropdown-item">Profile</button></li>
+                    <li><button onClick={props.onProfile} className="dropdown-item">Profile</button></li>
                     <li><hr className="dropdown-divider" /></li>
                     <li><button onClick={props.onSignOut} className="dropdown-item">Sign out</button></li>
                 </ul>
