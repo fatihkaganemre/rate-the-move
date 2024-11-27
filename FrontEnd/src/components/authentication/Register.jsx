@@ -6,7 +6,7 @@ function Register(props) {
 
     const onSubmit = (event) => {
         event.preventDefault();
-        props.onRegister(input);
+        props.onSubmit(input);
     };
 
     function handleOnChange(event) {

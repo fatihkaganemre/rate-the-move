@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import MovesGallery from "./tabs/MovesGallery"
 import CompetitorsGallery from "./tabs/CompetitorsGallery";
 import RatingsGallery from "./tabs/RatingsGallery";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import Login from './authentication/Login';
 import Register from './authentication/Register';
 import Profile from './Profile';
@@ -11,11 +11,13 @@ import Profile from './Profile';
 function App() {
   const [isLoggedIn, setLoggedIn] = useState(false);
   const navigate = useNavigate();
-
+  const location = useLocation();
 
   useEffect(() => {
-    navigate("/login")
-  }, []);
+    if (!isLoggedIn) {
+      navigate("/login");
+    }
+  }, [isLoggedIn, navigate]);
 
   function handleSignOut() {
     const requestOptions = {
@@ -71,7 +73,7 @@ function App() {
   function LoggedInUserUI() {
     return (
       <div>
-        <NavBar onSignOut={handleSignOut} onProfile={handleProfileTapped} />
+        {location.pathname !== "/profile" && ( <NavBar onSignOut={handleSignOut} onProfile={handleProfileTapped} /> )}
         <Routes>
           <Route path="/moves" element={ <MovesGallery /> } />
           <Route path="/ratings" element={ <RatingsGallery /> }/>
