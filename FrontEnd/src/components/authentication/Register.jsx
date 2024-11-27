@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import ToggleSwitch from "./ToggleSwitch";
+import ToggleSwitch from "../common/ToggleSwitch";
 
 function Register(props) {
     const [input, setInput] = useState({});

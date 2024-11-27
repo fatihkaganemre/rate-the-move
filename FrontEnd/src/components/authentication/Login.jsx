@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 
 function Login(props) {
     const [input, setInput] = useState({});

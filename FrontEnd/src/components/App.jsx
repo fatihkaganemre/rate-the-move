@@ -1,11 +1,11 @@
 import NavBar from './NavBar';
 import React, { useState, useEffect } from 'react';
-import MovesGallery from "./MovesGallery"
-import CompetitorsGallery from "./CompetitorsGallery";
-import RatingsGallery from "./RatingsGallery";
+import MovesGallery from "./tabs/MovesGallery"
+import CompetitorsGallery from "./tabs/CompetitorsGallery";
+import RatingsGallery from "./tabs/RatingsGallery";
 import { Routes, Route, useNavigate } from "react-router-dom";
-import Login from './Login';
-import Register from './Register';
+import Login from './authentication/Login';
+import Register from './authentication/Register';
 import Profile from './Profile';
 
 function App() {
@@ -44,7 +44,19 @@ function App() {
   }
 
   function register(input) {
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ input: input })
+    };
 
+    fetch('/register', requestOptions)
+      .then(response => response.json())
+      .then(() => { 
+        setLoggedIn(true);
+        navigate("/moves");
+      })
+      .catch((error) => alert(error.message))
   }
 
   function handleRegisterTapped() {

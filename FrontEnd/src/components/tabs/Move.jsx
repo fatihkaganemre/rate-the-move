@@ -1,5 +1,5 @@
 import React from "react";
-import Stars from "./Stars";
+import Stars from "../common/Stars";
 
 function Move(props) {
     function constructRatedStars() {

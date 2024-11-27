@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Move from "./Move";
-import Loader from "./Loader";
-import SearchComponent from "./Search";
+import Loader from "../common/Loader";
+import SearchComponent from "../common/Search";
 
 function RatingsGallery() {
     const [ratings, setRatings] = useState([]);
