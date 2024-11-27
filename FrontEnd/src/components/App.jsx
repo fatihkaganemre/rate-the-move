@@ -12,6 +12,11 @@ function App() {
   const [isLoggedIn, setLoggedIn] = useState(false);
   const navigate = useNavigate();
 
+
+  useEffect(() => {
+    navigate("/login")
+  }, []);
+
   function handleSignOut() {
     const requestOptions = {
       method: 'POST',
@@ -22,7 +27,7 @@ function App() {
       .then(response => response.json())
       .then(() => { 
         setLoggedIn(false);
-        navigate("/");
+        navigate("/login");
       })
       .catch((error) => alert(error.message))
   }
@@ -59,17 +64,9 @@ function App() {
       .catch((error) => alert(error.message))
   }
 
-  function handleRegisterTapped() {
-    navigate("/register")
-  }
-
-  function handleCancelTapped() {
-    navigate("/login")
-  }
-
-  function handleProfileTapped() {
-    navigate("profile")
-  }
+  const handleRegisterTapped = () => navigate("/register");
+  const handleCancelTapped = () => navigate("/login");
+  const handleProfileTapped = () => navigate("/profile");
 
   function LoggedInUserUI() {
     return (
@@ -96,13 +93,9 @@ function App() {
     )
   }
 
-  useEffect(() => {
-    navigate("login")
-  }, []);
-
   return (
     <div>
-      { isLoggedIn ? LoggedInUserUI() : LoggedOutUserUI() }
+      {isLoggedIn ? <LoggedInUserUI /> : <LoggedOutUserUI />}
     </div>
   );
 }
