@@ -35,7 +35,7 @@ function Login(props) {
                                 </div>
                                 <div style={styles.loginRegister}>
                                     <input type="submit" value="Login" className="btn btn-dark"/>
-                                    <button onClick={props.onRegister} className="btn btn-light">Register</button>
+                                    <button type="button" onClick={props.onRegister} className="btn btn-light">Register</button>
                                 </div>
                             </form>
                         </div>

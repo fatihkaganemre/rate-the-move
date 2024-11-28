@@ -17,7 +17,7 @@ function App() {
     if (!isLoggedIn) {
       navigate("/login");
     }
-  }, [isLoggedIn, navigate]);
+  }, []);
 
   function handleSignOut() {
     const requestOptions = {
