@@ -16,6 +16,11 @@ function Login(props) {
         }));
     };
 
+    const handleGoogleLogin = () => {
+        window.location.href = "http://localhost:3001/auth/google";
+    };
+    
+
     return (
         <div className="container mt-5">
             <h1 style={styles.title}>Login</h1>
@@ -45,9 +50,9 @@ function Login(props) {
                 <div className="col-sm-4">
                     <div className="card">
                         <div className="card-body">
-                            <a className="btn btn-block" href="/auth/google" role="button">
+                            <button className="btn btn-block" onClick={handleGoogleLogin}>
                                 <i className="fab fa-google"> Sign In with Google </i>
-                            </a>
+                            </button>
                         </div>
                     </div>
                 </div>

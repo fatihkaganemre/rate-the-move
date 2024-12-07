@@ -14,7 +14,7 @@ function RatingsGallery() {
 
     function fetchRatings() {
         setIsLoading(true);
-        fetch('/getRatings') 
+        fetch('/ratings') 
           .then(response => response.json())
           .then(data => { 
             setRatings(data.ratings);
@@ -39,20 +39,19 @@ function RatingsGallery() {
             <Loader hidden={!isLoading} />
             {!isLoading && ratings.length === 0 && <h1>No ratings found!</h1>}
             <div className="ratings-gallery">   
-                { filteredRatings.map( (move) => { 
+                { filteredRatings.map( (rating) => { 
                     return (
                         <Move 
-                            key={move.id} 
-                            id={move.id} 
-                            userName={move.user.name}
-                            userImage={move.user.image}
-                            isRated={move.isRated}
-                            rate={move.rate}
-                            title={move.title} 
-                            description={move.description} 
-                            date={move.date}
-                            videoURL={move.videoURL}
-                            comments={move.comments}
+                            key={rating.id} 
+                            id={rating.id} 
+                            userName={rating.user.name}
+                            userImage={rating.user.image_url}
+                            rate={rating.rate}
+                            title={rating.title} 
+                            description={rating.description} 
+                            date={rating.date}
+                            videoURL={rating.videoURL}
+                            comments={rating.comments}
                         />
                     );
                 }) } 

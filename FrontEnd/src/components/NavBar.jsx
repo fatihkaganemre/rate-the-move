@@ -30,7 +30,7 @@ function NavBar(props) {
 
                     <div className="dropdown text-end">
                         <a href="#" className="d-block link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="https://github.com/mdo.png" alt="mdo" width="50" height="50" className="rounded-circle" />
+                            <img src={props.userImage} alt="mdo" width="50" height="50" className="rounded-circle" />
                         </a>
                         <ul className="dropdown-menu text-small">
                             <li><button onClick={props.onProfile} className="dropdown-item">Profile</button></li>

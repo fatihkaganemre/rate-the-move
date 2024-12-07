@@ -15,7 +15,7 @@ function MovesGallery() {
 
     function fetchMoves() {
         setIsLoading(true)
-        fetch('/getMoves') 
+        fetch('/moves') 
             .then(response => response.json())
             .then(data => { 
                 if (data.moves.length > 0) {
@@ -82,7 +82,7 @@ function MovesGallery() {
                             key={move.id} 
                             id={move.id} 
                             userName= {move.user.name}
-                            userImage= {move.user.image}
+                            userImage= {move.user.image_url}
                             title={move.title} 
                             description={move.description} 
                             date={move.date}

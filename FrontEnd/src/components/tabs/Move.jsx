@@ -28,10 +28,10 @@ function Move(props) {
                         <div className="move-date">{props.date}</div>
                     </div>
                 </div>
-                <div> { props.isRated ? constructRatedStars() : <Stars id={props.id} onRated={handleRating} /> } </div>
-                <textarea type="text" placeholder="Write something.." hidden={props.isRated} name="comment"/>
-                <button disabled={props.isSubmitting} type="submit" className="btn btn-primary" hidden={props.isRated}>Submit</button>
-                <div className="my-comment" hidden={!props.isRated}>Me: {props.comments && props.comments[0].comment}</div>
+                <div> { props.rate !== undefined ? constructRatedStars() : <Stars id={props.id} onRated={handleRating} /> } </div>
+                <textarea type="text" placeholder="Write something.." hidden={props.rate !== undefined} name="comment"/>
+                <button disabled={props.isSubmitting} type="submit" className="btn btn-primary" hidden={props.rate !== undefined}>Submit</button>
+                <div className="my-comment" hidden={props.rate === undefined}>Me: {props.comments && props.comments[0]}</div>
             </form>
             <video width="320" controls>
                 <source src={props.videoURL} type="video/mp4" />

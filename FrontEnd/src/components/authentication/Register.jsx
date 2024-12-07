@@ -20,7 +20,7 @@ function Register(props) {
     const handleToggleChange = (selectedOption) => {
         setInput(prevInput => ({
             ...prevInput,
-            option: selectedOption
+            type: selectedOption
         }));
     };
 
@@ -33,6 +33,14 @@ function Register(props) {
                     <div style={styles.loginCard} className="card">
                         <div className="card-body">
                             <form onChange={handleOnChange} onSubmit={onSubmit}>
+                                <div className="form-group">
+                                    <label htmlFor="name">Name</label>
+                                    <input id="name" type="text" className="form-control" name="name" placeholder="Enter name" autoComplete="on" required/>
+                                </div>
+                                <div className="form-group">
+                                    <label htmlFor="surname">Surname</label>
+                                    <input id="surname" type="text" className="form-control" name="surname" placeholder="Enter surname" autoComplete="on" required/>
+                                </div>
                                 <div className="form-group">
                                     <label htmlFor="email">Email</label>
                                     <input id="email" type="email" className="form-control" name="email" placeholder="Enter email" autoComplete="on" required/>

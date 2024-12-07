@@ -7,17 +7,38 @@ import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import Login from './authentication/Login';
 import Register from './authentication/Register';
 import Profile from './Profile';
+import Loader from './common/Loader';
 
 function App() {
   const [isLoggedIn, setLoggedIn] = useState(false);
+  const [isLoading, setLoading] = useState(true); // New loading state
   const navigate = useNavigate();
   const location = useLocation();
+  const [user, setUser] = useState(); 
 
   useEffect(() => {
-    if (!isLoggedIn) {
-      navigate("/login");
-    }
+    checkAuthentication();
   }, []);
+
+  function checkAuthentication() {
+    fetch("/api/check-auth", { credentials: "include" })
+      .then((response) => {
+          if (response.ok) { return response.json(); }
+          throw new Error("Not authenticated");
+      })
+      .then((data) => {
+          setLoggedIn(data.isLoggedIn);
+          setLoading(false);
+          setUser(data.user);
+          navigate("/moves");
+      })
+      .catch((error) => {
+          alert(error);
+          setLoggedIn(false);
+          setLoading(false);
+          navigate("/login");
+      });
+  }
 
   function handleSignOut() {
     const requestOptions = {
@@ -38,7 +59,7 @@ function App() {
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ input: input })
+        body: JSON.stringify({username: input.email, password: input.password})
     };
 
     fetch('/login', requestOptions)
@@ -54,7 +75,7 @@ function App() {
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ input: input })
+      body: JSON.stringify(input)
     };
 
     fetch('/register', requestOptions)
@@ -63,7 +84,7 @@ function App() {
         setLoggedIn(true);
         navigate("/moves");
       })
-      .catch((error) => alert(error.message))
+      .catch((error) => alert(error))
   }
 
   const handleRegisterTapped = () => navigate("/register");
@@ -73,12 +94,13 @@ function App() {
   function LoggedInUserUI() {
     return (
       <div>
-        {location.pathname !== "/profile" && ( <NavBar onSignOut={handleSignOut} onProfile={handleProfileTapped} /> )}
+        {location.pathname !== "/profile" && ( <NavBar onSignOut={handleSignOut} onProfile={handleProfileTapped} userImage={user.image_url}/> )}
         <Routes>
+          <Route path="/" element={ <MovesGallery /> } />
           <Route path="/moves" element={ <MovesGallery /> } />
           <Route path="/ratings" element={ <RatingsGallery /> }/>
           <Route path="/competitors" element= { <CompetitorsGallery /> }/>
-          <Route path="/profile" element= { <Profile /> }/>
+          <Route path="/profile" element= { <Profile imageURL={user.image_url} userName={user.name} email={user.email} /> }/>
         </Routes>
       </div>
     ) 
@@ -88,6 +110,7 @@ function App() {
     return (
       <div>
         <Routes>
+          <Route path="/" element={ <Login onSubmit={login} onRegister={handleRegisterTapped} /> } />
           <Route path="/login" element={ <Login onSubmit={login} onRegister={handleRegisterTapped} /> } />
           <Route path="/register" element={ <Register onSubmit={register} onCancel={handleCancelTapped} /> }/>
         </Routes>
@@ -95,11 +118,9 @@ function App() {
     )
   }
 
-  return (
-    <div>
-      {isLoggedIn ? <LoggedInUserUI /> : <LoggedOutUserUI />}
-    </div>
-  );
+  return isLoading 
+    ? (<div><Loader/></div>) 
+    : (<div> {isLoggedIn ? <LoggedInUserUI /> : <LoggedOutUserUI />} </div>);
 }
 
 export default App;

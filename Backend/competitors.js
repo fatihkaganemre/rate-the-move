@@ -1,20 +1,9 @@
 import express from 'express';
+import pg from 'pg';
 
-export const competitors = [
-    { id: 2, name: "Fatih Emre", level: 5, numberOfMoves: 12 },
-    { id: 3, name: "Maria Emre", level: 10, numberOfMoves: 24 },
-    { id: 4, name: "Maciej Drazewski", level: 10, numberOfMoves: 24 },
-    { id: 5, name: "Hubert Kaczamarek", level: 10, numberOfMoves: 24 },
-    { id: 6, name: "Arek Kwaszniweski", level: 10, numberOfMoves: 24 }
-];
-
-export var addedCompetitors = [
-    { id: 2, name: "Fatih Emre", level: 5, numberOfMoves: 12 },
-    { id: 3, name: "Maria Emre", level: 10, numberOfMoves: 24 },
-];
-
-// Create a router
 const router = express.Router();
+const db = new pg.Client();
+
 
 // Get added competitors
 router.get("/getAddedCompetitors", (req, res) => {
