@@ -1,15 +1,18 @@
 import express from 'express';
-import pg from 'pg';
+import db from './db.js';
 
 const router = express.Router();
-const db = new pg.Client();
 
 
 // Get added competitors
-router.get("/getAddedCompetitors", (req, res) => {
-    setTimeout(function() {
-        res.json({ competitors: addedCompetitors });
-    }, 1000);
+router.get("/competitors", async (req, res) => {
+    try {
+        const result = await db.query("SELECT * FROM users WHERE type = 'competitor'");
+        if (result.rows.length === 0) { return res.status(404).json({ error: 'Not found' }) }
+        res.json( { competitors: result.rows} )
+    } catch {
+        res.status(404).json({ error: 'Not found' });
+    }
 });
 
 // Search competitors that are not added yet

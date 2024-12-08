@@ -17,13 +17,13 @@ function CompetitorsGallery() {
     function fetchCompetitors() {
         setLoaderHidden(false);
 
-        fetch('/getAddedCompetitors') 
+        fetch('/competitors') 
             .then(response => response.json())
             .then(data => { 
                 data.competitors.length === 0 ? setTitle("No competitors found") : setCompetitors(data.competitors);
                 setLoaderHidden(true);
             })
-            .catch(error => alert(error.message))
+            .catch(error => setTitle("No competitors found"))
     };
 
     async function handleSearch(query) {

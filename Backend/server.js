@@ -53,6 +53,8 @@ app.get("/moves", async (req, res) => {
     try {
         const movesResult = await db.query("SELECT * FROM moves");
         const usersResult = await db.query("SELECT * FROM users WHERE type = $1", ['competitor']);
+        const ratingsResult = await db.query("SELECT * FROM ratings");
+        const ratingMoveIds = ratingsResult.rows.map(rating => rating.move_id);
         const moves = movesResult.rows
             .map(move => {
                 const user = usersResult.rows.find( user => user.id === move.user_id);
@@ -64,7 +66,8 @@ app.get("/moves", async (req, res) => {
                     videoURL: move.video_url,
                     user: user,
                 };
-            }).filter(move => move.rate === undefined)
+            })
+            .filter(move => !ratingMoveIds.includes(move.id))
         return res.json({ moves: moves });
     } catch (error) {
         return res.status(400).json({ error: "Bad request" });
@@ -97,36 +100,22 @@ app.get("/ratings", async (req, res) => {
 });
 
 app.post("/rate", async (req, res) => {
+    const coachId = req.user.id; 
+    if (coachId === null) { return res.status(400).json({ error: "Bad request" }); }
+    const {id, rate, comment} = req.body;
     console.log(req.body);
-    let id = req.body['id'];
-    let rate = req.body['rate'];
-    let comment = req.body['comment'];
-
-    if (id !== null && rate !== null && comment !== null && rate !== 0 && rate <= 5) {
-        let newRating = moves.find( (move) => move.id === id ); 
-        if (!newRating) {
-            return res.status(404).json({ error: "Movie not found" });
-        }
-
-        newRating.rate = rate;
-        newRating.isRated = true;
-        newRating.comments = [{userId: 0, comment: comment}];
-        ratings.push(newRating);
-        moves = moves.filter( (move) => move.id !== id);
-
-        setTimeout(function() {
-            return res.status(200).json({ message: "Rating submitted successfully" });
-       },1000);
-    } else {
-        setTimeout(function() {
-            return res.status(400).json({ error: "Bad request" });
-       },1000);
+    try {
+        await db.query(
+            "INSERT INTO ratings (move_id, coach_id, rate, comment) VALUES ($1, $2, $3, $4)",
+            [id, coachId, rate, comment]
+        );
+    } catch {
+        return res.status(400).json({ error: "Bad request" });
     }
 });
 
 
 // Passport Configuration
-
 passport.use(
     new LocalStrategy(async (username, password, done) => {
         try {
