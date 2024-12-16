@@ -33,7 +33,7 @@ function Move(props) {
                 <button disabled={props.isSubmitting} type="submit" className="btn btn-primary" hidden={props.rate !== undefined}>Submit</button>
                 <div className="my-comment" hidden={props.rate === undefined}>Me: {props.comments && props.comments[0]}</div>
             </form>
-            <video width="320" controls>
+            <video style={styles.video} controls>
                 <source src={props.videoURL} type="video/mp4" />
             </video>
         </div>
@@ -49,7 +49,13 @@ const styles = {
         alignItems: "center", 
         float: "left",
         marginRight: "20px"
-    }
+    },
+    video: {
+        height: "auto", // Keeps aspect ratio intact
+        marginTop: "20px", // Adds spacing from the elements above
+        borderRadius: "10px", // Optional, for rounded corners
+        boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)", // Optional, for a polished look
+    }, 
 };
 
 export default Move;

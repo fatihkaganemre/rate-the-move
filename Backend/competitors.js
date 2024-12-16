@@ -3,7 +3,6 @@ import db from './db.js';
 
 const router = express.Router();
 
-
 // Get added competitors
 router.get("/competitors", async (req, res) => {
     try {
@@ -16,35 +15,17 @@ router.get("/competitors", async (req, res) => {
 });
 
 // Search competitors that are not added yet
-router.get("/searchCompetitors", (req, res) => {
-    const query = req.query.q;
-    const notAddedCompetitors = competitors.filter(competitor =>
-        !addedCompetitors.some(added => added.id === competitor.id)
-    );
-    const filteredCompetitors = notAddedCompetitors.filter(competitor =>
-        competitor.name.toLowerCase().includes(query.toLowerCase())
-    );
-    res.json({ competitors: filteredCompetitors });
-});
+router.get("/searchCompetitors", async (req, res) => {
+    try { 
+        const query = req.query.q;
+        const result = await db.query("SELECT * FROM users WHERE type = 'competitor'");
 
-router.get("/addCompetitor", (req, res) => {
-    const id = parseInt(req.query.id, 10);  // Convert id to an integer
-    const exists = addedCompetitors.some(competitor => competitor.id === id);
-    
-    if (exists) { 
-        return res.status(200).json({ message: "Competitor already added" });
-    }
-    
-    const newCompetitor = competitors.find(c => c.id === id);
-    console.log(newCompetitor);
-    
-    if (newCompetitor) {
-        addedCompetitors.push(newCompetitor);
-        setTimeout(function() {
-            res.status(200).json({ message: "Competitor added successfully" });
-        }, 1000);
-    } else {
-        res.status(404).json({ message: "Competitor not found" });
+        const competitors = result.rows.filter(competitor =>
+            competitor.name.toLowerCase().includes(query.toLowerCase())
+        );
+        res.json({ competitors });
+    } catch {
+        res.status(404).json({ error: 'Not found' });
     }
 });
 

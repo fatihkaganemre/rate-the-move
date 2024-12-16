@@ -62,7 +62,9 @@ function MovesGallery() {
 
     function handleSearch(query) {
         const lowercasedQuery = query.toLowerCase();
-        const filtered = moves.filter(move => move.title.toLowerCase().includes(lowercasedQuery));
+        const filtered = moves.filter(move => {
+            return move.title.toLowerCase().includes(lowercasedQuery) || move.user.name.toLowerCase().includes(lowercasedQuery)
+        });
         setFilteredMoves(filtered);
     };
 

@@ -6,7 +6,7 @@ import RatingsGallery from "./tabs/RatingsGallery";
 import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import Login from './authentication/Login';
 import Register from './authentication/Register';
-import Profile from './Profile';
+import Profile from './profile/Profile';
 import Loader from './common/Loader';
 
 function App() {
@@ -27,9 +27,10 @@ function App() {
           throw new Error("Not authenticated");
       })
       .then((data) => {
-          setLoggedIn(data.isLoggedIn);
           setLoading(false);
           setUser(data.user);
+          console.log(data.user);
+          setLoggedIn(data.isLoggedIn);
           navigate("/moves");
       })
       .catch((error) => {
@@ -87,6 +88,10 @@ function App() {
       .catch((error) => alert(error))
   }
 
+  function removeAccount() {
+    console.log("remove account")
+  }
+
   const handleRegisterTapped = () => navigate("/register");
   const handleCancelTapped = () => navigate("/login");
   const handleProfileTapped = () => navigate("/profile");
@@ -100,7 +105,13 @@ function App() {
           <Route path="/moves" element={ <MovesGallery /> } />
           <Route path="/ratings" element={ <RatingsGallery /> }/>
           <Route path="/competitors" element= { <CompetitorsGallery /> }/>
-          <Route path="/profile" element= { <Profile imageURL={user.image_url} userName={user.name} email={user.email} /> }/>
+          <Route path="/profile" element= { 
+            <Profile 
+              image_url={user.image_url} 
+              username={`${user.name} ${user.surname}`} 
+              email={user.email} 
+              onRemoveAccount={removeAccount} /> 
+          }/>
         </Routes>
       </div>
     ) 
