@@ -23,6 +23,9 @@ function ChangePassword() {
         e.preventDefault();
         console.log("Old Password:", oldPassword);
         console.log("New Password:", newPassword);
+
+        
+
         // Add validation and API call logic here
     };
 

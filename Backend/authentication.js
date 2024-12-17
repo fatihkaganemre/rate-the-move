@@ -20,7 +20,11 @@ router.post("/register", async (req, res) => {
             "INSERT INTO users (email, password, name, surname, team_id, type) VALUES ($1, $2, $3, $4, $5, $6)",
             [email, hashedPassword, name, surname, team.id, type.toLowerCase()]
         );
-        res.status(201).json({ message: "Registration successful" });
+
+        req.login({ email, password }, (err) => {
+            if (err) { return res.status(500).json({ error: "Login failed after registration" }) }
+            res.status(201).json({ message: "Registration successful" });
+        }); 
     } catch (error) {
         res.status(500).json({ error });
     }

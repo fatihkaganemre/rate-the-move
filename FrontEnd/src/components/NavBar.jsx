@@ -6,11 +6,9 @@ function NavBar(props) {
     const menuItems = [
         { path: "/moves", label: "Moves" },
         { path: "/ratings", label: "Ratings" },
-        { path: "/competitors", label: "Competitors" },
+        { path: "/competitors", lablel: "Competitors" },
     ];
     const isActive = (path) => location.pathname === path;
-
-    useEffect(() => {console.log(props.userImage) }, []);
 
     return (
         <header className="navBar p-3 mb-3 border-bottom">

@@ -15,6 +15,7 @@ import competitorsRoutes from './competitors.js';
 import authenticationRoutes from './authentication.js';
 import movesRoutes from './moves.js';
 import ratingsRoutes from './ratings.js';
+import accountRoutes from './account.js';
 
 
 const __filename = fileURLToPath(import.meta.url);
@@ -53,6 +54,7 @@ app.use(competitorsRoutes);
 app.use(authenticationRoutes);
 app.use(movesRoutes);
 app.use(ratingsRoutes);
+app.use(accountRoutes)
 
 // Passport Configuration
 passport.use(

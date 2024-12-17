@@ -29,7 +29,6 @@ function App() {
       .then((data) => {
           setLoading(false);
           setUser(data.user);
-          console.log(data.user);
           setLoggedIn(data.isLoggedIn);
           navigate("/moves");
       })
@@ -88,8 +87,9 @@ function App() {
       .catch((error) => alert(error))
   }
 
-  function removeAccount() {
-    console.log("remove account")
+  function handleRemovedAccount() {
+    setLoggedIn(false);
+    navigate("/login");
   }
 
   const handleRegisterTapped = () => navigate("/register");
@@ -109,8 +109,8 @@ function App() {
             <Profile 
               image_url={user.image_url} 
               username={`${user.name} ${user.surname}`} 
-              email={user.email} 
-              onRemoveAccount={removeAccount} /> 
+              email={user.email}
+              onRemovedAccount={handleRemovedAccount}/> 
           }/>
         </Routes>
       </div>

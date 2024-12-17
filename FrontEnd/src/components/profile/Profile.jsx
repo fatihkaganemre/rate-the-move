@@ -8,10 +8,28 @@ function Profile(props) {
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const confirmRemoveAccount = () => {
         setIsPopupOpen(false);
-        props.onRemoveAccount(); 
+        removeAccount();
     };
     const handleRemoveAccount = () => { setIsPopupOpen(true) };
     const cancelRemoveAccount = () => { setIsPopupOpen(false) };
+
+    function removeAccount() {
+        const requestOptions = {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' }
+          };
+      
+          fetch('/account', requestOptions)
+            .then(response => response.json())
+            .then(() => { 
+              props.onRemovedAccount();
+            })
+            .catch((error) => alert(error))
+    }
+
+    function changeEmail(email) {
+
+    }
 
     return (
         <div className="mainConteiner">
@@ -32,7 +50,7 @@ function Profile(props) {
             </div>
             <div className="profileData">
                 <h1>Settings</h1>
-                <ChangeEmail/>
+                <ChangeEmail onSubmit={changeEmail}/>
                 <ChangePassword/>
                 <button className="btn btn-danger" onClick={handleRemoveAccount}>Remove Account</button>
             </div>
