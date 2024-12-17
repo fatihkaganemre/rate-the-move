@@ -37,7 +37,7 @@ function Profile(props) {
                 <h2 className="userName">{props.username}</h2>
                 <div className="profileImageContainer">
                     <img
-                        src={props.image_url}
+                        src={props.image_url || "./user-placeholder.svg"}
                         alt="Profile image"
                         className="profileImage"
                         referrerPolicy="no-referrer"

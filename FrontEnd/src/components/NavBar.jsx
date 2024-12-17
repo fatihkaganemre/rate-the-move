@@ -29,8 +29,16 @@ function NavBar(props) {
                     </ul>
 
                     <div className="dropdown text-end">
+                        <h6>Hello, {props.username}</h6>
                         <a href="#" className="d-block link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src={props.userImage} alt="profile icon" width="50" height="50" className="rounded-circle" referrerPolicy="no-referrer" />
+                            <img 
+                                src={props.userImage || "./user-placeholder.svg"} 
+                                alt="profile icon" 
+                                width="50" 
+                                height="50" 
+                                className="rounded-circle" 
+                                referrerPolicy="no-referrer" 
+                            />
                         </a>
                         <ul className="dropdown-menu text-small">
                             <li><button onClick={props.onProfile} className="dropdown-item">Profile</button></li>

@@ -99,7 +99,7 @@ function App() {
   function LoggedInUserUI() {
     return (
       <div>
-        {location.pathname !== "/profile" && ( <NavBar onSignOut={handleSignOut} onProfile={handleProfileTapped} userImage={user.image_url}/> )}
+        {location.pathname !== "/profile" && ( <NavBar onSignOut={handleSignOut} onProfile={handleProfileTapped} userImage={user.image_url} username={user.name}/> )}
         <Routes>
           <Route path="/" element={ <MovesGallery /> } />
           <Route path="/moves" element={ <MovesGallery /> } />
