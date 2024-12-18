@@ -7,12 +7,12 @@ import bcrypt from "bcrypt";
 import path, { dirname }  from "path";
 import cors from "cors";
 import env from "dotenv";
-import db from './db.js';
+import db from './db/db.js';
 import bodyParser from "body-parser";
 import { fileURLToPath } from "url";
 
 import { competitorsRoutes } from "./api/competitors.js";
-import { movesRoutes } from "./api/movies.js";
+import { moviesRoutes } from "./api/movies.js";
 import { ratingsRoutes } from "./api/ratings.js";
 import { authenticationRoutes } from "./api/authentication.js";
 import { accountRoutes } from "./api/account.js";
@@ -27,7 +27,7 @@ const PORT = process.env.PORT || 3001;
 // Middleware
 app.use(
   cors({
-    origin: "http://localhost:3000", // Replace with your front-end origin
+    origin: process.env.WEBAPP_URL, // Replace with your front-end origin
     credentials: true, // Allows session cookies to be sent
   })
 );
@@ -51,7 +51,7 @@ app.use(passport.session());
 // Routes
 app.use(competitorsRoutes);
 app.use(authenticationRoutes);
-app.use(movesRoutes);
+app.use(moviesRoutes);
 app.use(ratingsRoutes);
 app.use(accountRoutes);
 
@@ -75,20 +75,23 @@ passport.use(
         {
         clientID: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-        callbackURL: process.env.GOOGLE_CLIENT_CALLBACK_URL || "http://localhost:3001/auth/google/callback",
+        callbackURL: `${process.env.WEBAPP_URL}/api/auth/google/callback`,
         userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo",
         scope: ["profile", "email"],
         },
         async (accessToken, refreshToken, profile, done) => {
             try {
                 const result = await db.query("SELECT * FROM users WHERE email = $1", [profile.email]);
+                console.log(result.rows)
                 if (result.rows.length === 0) {
+                    console.log("adding new user to database")
                     const newUser = await db.query(
                         "INSERT INTO users (team_id, name, surname, image_url, email, password, type, level) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)",
                         [1, profile.given_name, profile.family_name, profile.picture, profile.email, "google", "coach", null]
                     );
                     return done(null, newUser.rows[0]);
                 } else {
+                    console.log("Using existing user from database")
                     return done(null, result.rows[0]);
                 }
             } catch (error) {

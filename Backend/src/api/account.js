@@ -1,5 +1,5 @@
 import express from 'express';
-import db from './db.js';
+import db from '../db/db.js';
 import bcrypt from 'bcrypt';
 
 export const accountRoutes = express.Router();

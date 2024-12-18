@@ -42,7 +42,3 @@ ratingsRoutes.get("/ratings", async (req, res) => {
         return res.status(400).json({ error: "Bad request" });
     }
 });
-
-ratingsRoutes.get('/health', async (req, res) => {
-    return "ok"
-})

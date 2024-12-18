@@ -24,7 +24,7 @@ function AppContent() {
   }, []);
 
   function checkAuthentication() {
-    fetch("/api/check-auth", { credentials: "include" })
+    fetch("/api/auth/check-auth", { credentials: "include" })
       .then((response) => {
           if (response.ok) { return response.json(); }
           throw new Error("Not authenticated");
@@ -36,7 +36,6 @@ function AppContent() {
           navigate("/moves");
       })
       .catch((error) => {
-          alert(error);
           setIsLoggedIn(false);
           setLoading(false);
           navigate("/login");

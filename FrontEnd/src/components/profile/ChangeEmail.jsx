@@ -34,7 +34,7 @@ function ChangeEmail() {
             body: JSON.stringify({ email })
         };
       
-        fetch('/account/email', requestOptions)
+        fetch('/api/account/email', requestOptions)
         .then(response => response.json())
         .then(() => { setInformationPopupOpen(true) })
         .catch((error) => alert(error))

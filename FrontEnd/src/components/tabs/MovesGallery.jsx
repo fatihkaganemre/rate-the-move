@@ -46,7 +46,7 @@ function MovesGallery() {
             body: JSON.stringify({ id: id, rate: rate, comment: comment})
         };
     
-        fetch('/rate', requestOptions)
+        fetch('/api/rate', requestOptions)
             .then(response => response.json())
             .then(() => { 
                 setMoves( (prevMoves) => { 
