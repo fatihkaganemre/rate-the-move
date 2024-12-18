@@ -6,7 +6,8 @@ const router = express.Router();
 // Get added competitors
 router.get("/competitors", async (req, res) => {
     try {
-        const result = await db.query("SELECT * FROM users WHERE type = 'competitor'");
+        const result = await db.query("SELECT * FROM users WHERE type=$1", ['competitor']);
+        console.log(result.rows);
         if (result.rows.length === 0) { return res.status(404).json({ error: 'Not found' }) }
         res.json( { competitors: result.rows} )
     } catch {

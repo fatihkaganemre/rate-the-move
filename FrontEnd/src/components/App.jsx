@@ -1,4 +1,4 @@
-import NavBar from './NavBar';
+import NavBar from './navbar/NavBar';
 import React, { useState, useEffect } from 'react';
 import MovesGallery from "./tabs/MovesGallery"
 import CompetitorsGallery from "./tabs/CompetitorsGallery";
