@@ -17,7 +17,7 @@ function CompetitorsGallery() {
     function fetchCompetitors() {
         setLoaderHidden(false);
 
-        fetch('/competitors') 
+        fetch('/api/competitors') 
             .then(response => response.json())
             .then(data => { 
                 data.competitors.length === 0 ? setTitle("No competitors found") : setCompetitors(data.competitors);

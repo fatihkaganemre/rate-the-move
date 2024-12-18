@@ -21,7 +21,7 @@ function App() {
   }, []);
 
   function checkAuthentication() {
-    fetch("/api/check-auth", { credentials: "include" })
+    fetch("/api/auth/check-auth", { credentials: "include" })
       .then((response) => {
           if (response.ok) { return response.json(); }
           throw new Error("Not authenticated");
@@ -46,7 +46,7 @@ function App() {
       headers: { 'Content-Type': 'application/json' }
     };
 
-    fetch('/logout', requestOptions)
+    fetch('/api/logout', requestOptions)
       .then(response => response.json())
       .then(() => { 
         setLoggedIn(false);
@@ -62,7 +62,7 @@ function App() {
         body: JSON.stringify({username: input.email, password: input.password})
     };
 
-    fetch('/login', requestOptions)
+    fetch('/api/login', requestOptions)
       .then(response => response.json())
       .then(() => { 
         setLoggedIn(true);
@@ -78,7 +78,7 @@ function App() {
       body: JSON.stringify(input)
     };
 
-    fetch('/register', requestOptions)
+    fetch('/api/register', requestOptions)
       .then(response => response.json())
       .then(() => { 
         setLoggedIn(true);

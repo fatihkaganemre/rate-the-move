@@ -15,7 +15,7 @@ function MovesGallery() {
 
     function fetchMoves() {
         setIsLoading(true)
-        fetch('/moves') 
+        fetch('/api/moves') 
             .then(response => response.json())
             .then(data => { 
                 if (data.moves.length > 0) {
