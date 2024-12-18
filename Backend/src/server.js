@@ -7,13 +7,16 @@ import bcrypt from "bcrypt";
 import path, { dirname }  from "path";
 import cors from "cors";
 import env from "dotenv";
+import db from './db.js';
 import bodyParser from "body-parser";
-import { fileURLToPath } from "url";
+import { fileURLToPath } from 'url';
 
-import { competitorsRoutes } from "./api/competitors.js";
-import { moviesRoutes } from "./api/movies.js";
-import { ratingsRoutes } from "./api/ratings.js";
-import authRoutes from "./api/authentication.js";
+import competitorsRoutes from './competitors.js';
+import authenticationRoutes from './authentication.js';
+import movesRoutes from './moves.js';
+import ratingsRoutes from './ratings.js';
+import accountRoutes from './account.js';
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -24,19 +27,19 @@ const PORT = process.env.PORT || 3001;
 
 // Middleware
 app.use(
-  cors({
-    origin: "http://localhost:3000", // Replace with your front-end origin
-    credentials: true, // Allows session cookies to be sent
-  })
+    cors({
+        origin: "http://localhost:3000", // Replace with your front-end origin
+        credentials: true, // Allows session cookies to be sent
+    })
 );
 app.use(bodyParser.json());
-app.use(express.static(path.join(__dirname, "../Frontend/public")));
+app.use(express.static(path.join(__dirname, '../Frontend/public')));
 app.use(
     session({
         secret: process.env.SESSION_SECRET,
         resave: false,
         saveUninitialized: true,
-        cookie: {
+        cookie: { 
             secure: false, // Use true with HTTPS
             httpOnly: true,
             sameSite: "lax", // Adjust for production if needed
@@ -48,13 +51,10 @@ app.use(passport.session());
 
 // Routes
 app.use(competitorsRoutes);
-app.use(authRoutes);
-app.use(moviesRoutes);
+app.use(authenticationRoutes);
+app.use(movesRoutes);
 app.use(ratingsRoutes);
-app.get("*", function (req, res) {
-  console.log(`Not found path ${req.url}`);
-  res.status(404);
-});
+app.use(accountRoutes);
 
 // Passport Configuration
 passport.use(
@@ -99,7 +99,7 @@ passport.use(
     )
 );
 
-passport.serializeUser((user, done) => {
+passport.serializeUser((user, done) => { 
     done(null, user.id)
 });
 
@@ -118,5 +118,5 @@ passport.deserializeUser(async (id, done) => {
 
 // Start Server
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+    console.log(`Server is running on port ${PORT}`);
 });

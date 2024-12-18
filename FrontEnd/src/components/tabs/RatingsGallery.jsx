@@ -25,7 +25,9 @@ function RatingsGallery() {
 
     function handleSearch(query) {
         const lowercasedQuery = query.toLowerCase();
-        const filtered = ratings.filter(rate => rate.title.toLowerCase().includes(lowercasedQuery));
+        const filtered = ratings.filter(rate => {
+            return rate.title.toLowerCase().includes(lowercasedQuery) || rate.user.name.toLowerCase().includes(lowercasedQuery)
+        });
         setFilteredRatings(filtered);
     };
 
@@ -33,7 +35,7 @@ function RatingsGallery() {
         <div className="centered-flex"> 
             <SearchComponent 
                 hidden={isLoading}
-                placeholder="Search for rating..."
+                placeholder="Search rating by title or user"
                 onQuery={handleSearch}
             />
             <Loader hidden={!isLoading} />

@@ -3,6 +3,7 @@ import ToggleSwitch from "../common/ToggleSwitch";
 
 function Register(props) {
     const [input, setInput] = useState({});
+    const [type, setType] = useState('coach');
 
     const onSubmit = (event) => {
         event.preventDefault();
@@ -13,14 +14,8 @@ function Register(props) {
         const { name, value } = event.target;
         setInput(prevInput => ({
             ...prevInput,
+            type: type,
             [name]: value
-        }));
-    };
-
-    const handleToggleChange = (selectedOption) => {
-        setInput(prevInput => ({
-            ...prevInput,
-            type: selectedOption
         }));
     };
 
@@ -51,7 +46,7 @@ function Register(props) {
                                 </div>
                                 <div className="form-group">
                                     <label htmlFor="switch">Login as</label>
-                                    <ToggleSwitch optionA="Coach" optionB="Competitor" onChange={handleToggleChange} />
+                                    <ToggleSwitch optionA="Coach" optionB="Competitor" onChange={setType} />
                                 </div>
                                 <div className="form-group">
                                     <label htmlFor="teamName">Team name</label>

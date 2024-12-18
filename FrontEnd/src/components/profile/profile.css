@@ -1,0 +1,64 @@
+.mainConteiner {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    min-height: 100vh;
+}
+
+.profilePhotoName {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background-color: #50125c;
+    align-self: stretch;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    flex-grow: 1;
+}
+
+.profileData {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex-grow: 4;
+    padding: 20px;
+    align-self: stretch;
+    align-items: start;
+    justify-content: flex-start;
+    color: black;
+}
+
+.profileImage {
+    border-radius: 20px;
+    width: 200px;
+    height: auto;
+    object-fit: cover; /* Ensures placeholder or user images look good */
+}
+
+.profileImageContainer {
+    border-radius: 20px;
+    width: 200px;
+    height: 200px;
+    object-fit: cover; /* Ensures placeholder or user images look good */
+    position: relative;
+}
+
+.userName {
+    padding-top: 20px;
+}
+
+.addIcon {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: white;
+    color: rebeccapurple;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+}
