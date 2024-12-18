@@ -1,11 +1,10 @@
 import React from "react";
 import "./popup.css";
 
-function ConfirmationPopup({ 
+function InformationPopup({ 
     message,
     description,
-    onConfirm,
-    onCancel,
+    onOk,
     isOpen
 }) {
     if (!isOpen) return null;
@@ -16,11 +15,8 @@ function ConfirmationPopup({
                 <h3>{message}</h3>
                 {description && <p>{description}</p>}
                 <div className="popupActions">
-                    <button className="btn btn-danger" onClick={onConfirm}>
-                        Yes
-                    </button>
-                    <button className="btn btn-secondary" onClick={onCancel}>
-                        Cancel
+                    <button className="btn btn-secondary" onClick={onOk}>
+                        OK
                     </button>
                 </div>
             </div>
@@ -28,4 +24,4 @@ function ConfirmationPopup({
     );
 }
 
-export default ConfirmationPopup;
+export default InformationPopup;

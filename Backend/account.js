@@ -4,7 +4,14 @@ import bcrypt from 'bcrypt';
 
 const router = express.Router();
 
-router.delete("/account", async (req, res) => {
+const isAuthenticated = (req, res, next) => {
+    if (req.user) {
+        return next();
+    }
+    res.status(401).json({ message: "Unauthorized" });
+};
+
+router.delete("/account", isAuthenticated,  async (req, res) => {
     try {
         await db.query("DELETE FROM users WHERE id = $1", [req.user.id]);
         req.logout(error => {
@@ -16,7 +23,7 @@ router.delete("/account", async (req, res) => {
     }
 });
 
-router.post("/email", async (req, res) => {
+router.post("/account/email", isAuthenticated, async (req, res) => {
     try { 
         const email = req.body.email;
         await db.query("UPDATE users SET email=$1 WHERE id=$2", [email, req.user.id]);
@@ -26,7 +33,7 @@ router.post("/email", async (req, res) => {
     }
 });
 
-router.post("/password", async (req, res) => {
+router.post("/acount/password", isAuthenticated,  async (req, res) => {
     try { 
         const oldPassword = req.body.oldPassword;
         const newPassword = req.body.newPassword;

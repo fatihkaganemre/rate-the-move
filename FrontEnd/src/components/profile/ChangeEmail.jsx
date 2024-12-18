@@ -5,19 +5,24 @@ import "./ChangeEmail.css"; // Custom CSS for animations
 function ChangeEmail(props) {
     const [isVisible, setIsVisible] = useState(false);
     const [email, setEmail] = useState("");
+    const [isPopupOpen, setIsPopupOpen] = useState(false);
+    const handleButtonClick = () => { setIsVisible(!isVisible) };
+    const handleEmailChange = (event) => { setEmail(event.target.value) };
 
-    const handleButtonClick = () => {
-        setIsVisible(!isVisible);
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        if (isValidEmail(email)) {
+            props.onSubmit(email);
+            setIsVisible(false);
+        } else {
+            alert(`${email} is not a valid email address.`)
+        }
     };
 
-    const handleEmailChange = (event) => {
-        setEmail(event.target.value);
-    };
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        props.onSubmit(email);
-    };
+    function isValidEmail(email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    }
 
     return (
         <div>

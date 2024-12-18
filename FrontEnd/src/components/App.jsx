@@ -99,7 +99,7 @@ function App() {
   function LoggedInUserUI() {
     return (
       <div>
-        {location.pathname !== "/profile" && ( <NavBar onSignOut={handleSignOut} onProfile={handleProfileTapped} userImage={user.image_url} username={user.name}/> )}
+        {location.pathname !== "/profile" && ( <NavBar onSignOut={handleSignOut} onProfile={handleProfileTapped} userImage={user.image_url || './user-placeholder.svg'} username={user.name}/> )}
         <Routes>
           <Route path="/" element={ <MovesGallery /> } />
           <Route path="/moves" element={ <MovesGallery /> } />
@@ -107,7 +107,7 @@ function App() {
           <Route path="/competitors" element= { <CompetitorsGallery /> }/>
           <Route path="/profile" element= { 
             <Profile 
-              image_url={user.image_url} 
+              image_url={user.image_url || './user-placeholder.svg'} 
               username={`${user.name} ${user.surname}`} 
               email={user.email}
               onRemovedAccount={handleRemovedAccount}/> 

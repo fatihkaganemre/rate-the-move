@@ -3,9 +3,11 @@ import './profile.css'
 import ChangeEmail from "./ChangeEmail";
 import ChangePassword from "./ChangePassword";
 import ConfirmationPopup from "../common/ConfirmationPopup";
+import InformationPopup from "../common/InformationPopup";
 
 function Profile(props) {
     const [isPopupOpen, setIsPopupOpen] = useState(false);
+    const [isInformationPopupOpen, setInformationPopupOpen] = useState(false);
     const confirmRemoveAccount = () => {
         setIsPopupOpen(false);
         removeAccount();
@@ -17,18 +19,25 @@ function Profile(props) {
         const requestOptions = {
             method: 'DELETE',
             headers: { 'Content-Type': 'application/json' }
-          };
+        };
       
-          fetch('/account', requestOptions)
-            .then(response => response.json())
-            .then(() => { 
-              props.onRemovedAccount();
-            })
-            .catch((error) => alert(error))
+        fetch('/account', requestOptions)
+        .then(response => response.json())
+        .then(() => { props.onRemovedAccount() })
+        .catch((error) => alert(error))
     }
 
     function changeEmail(email) {
-
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email })
+        };
+      
+        fetch('/account/email', requestOptions)
+        .then(response => response.json())
+        .then(() => { setInformationPopupOpen(true) })
+        .catch((error) => alert(error))
     }
 
     return (
@@ -54,13 +63,17 @@ function Profile(props) {
                 <ChangePassword/>
                 <button className="btn btn-danger" onClick={handleRemoveAccount}>Remove Account</button>
             </div>
-
             <ConfirmationPopup
                 isOpen={isPopupOpen}
                 message="Are you sure?"
                 description="Do you really want to remove your account? This action cannot be undone."
                 onConfirm={confirmRemoveAccount}
                 onCancel={cancelRemoveAccount}
+            />
+            <InformationPopup
+                isOpen={isInformationPopupOpen}
+                message="Email has been updated"
+                onOk={ () => setInformationPopupOpen(false) }
             />
         </div>
     )

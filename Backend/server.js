@@ -54,7 +54,7 @@ app.use(competitorsRoutes);
 app.use(authenticationRoutes);
 app.use(movesRoutes);
 app.use(ratingsRoutes);
-app.use(accountRoutes)
+app.use(accountRoutes);
 
 // Passport Configuration
 passport.use(
