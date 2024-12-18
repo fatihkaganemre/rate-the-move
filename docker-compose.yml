@@ -22,8 +22,9 @@ services:
       - PG_HOST=postgres
       - PG_DATABASE=postgres
       - PG_PASSWORD=postgres
-      - PG_PORT=8080
+      - PG_PORT=5432
       - NODE_ENV=dev
+      - GOOGLE_CLIENT_CALLBACK_URL=http://localhost/api/auth/google/callback
       - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
       - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
       - SESSION_SECRET=${SESSION_SECRET}

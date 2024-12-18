@@ -1,10 +1,10 @@
 FROM node:22 AS build
 WORKDIR /app
-COPY src ./src
 COPY package-lock.json ./package-lock.json
 COPY package.json ./package.json
-COPY public ./public
 RUN npm ci
+COPY public ./public
+COPY src ./src
 RUN npm run build
 
 FROM nginx:1.27.3

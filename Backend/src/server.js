@@ -1,5 +1,10 @@
 import express from "express";
-import path, { dirname } from "path";
+import session from "express-session";
+import passport from "passport";
+import LocalStrategy from "passport-local";
+import GoogleStrategy from "passport-google-oauth2";
+import bcrypt from "bcrypt";
+import path, { dirname }  from "path";
 import cors from "cors";
 import env from "dotenv";
 import bodyParser from "body-parser";
@@ -25,7 +30,7 @@ app.use(
   })
 );
 app.use(bodyParser.json());
-// app.use(express.static(path.join(__dirname, "../Frontend/public")));
+app.use(express.static(path.join(__dirname, "../Frontend/public")));
 app.use(
     session({
         secret: process.env.SESSION_SECRET,
@@ -71,7 +76,7 @@ passport.use(
         {
         clientID: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-        callbackURL: "http://localhost:3001/auth/google/callback",
+        callbackURL: process.env.GOOGLE_CLIENT_CALLBACK_URL || "http://localhost:3001/auth/google/callback",
         userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo",
         scope: ["profile", "email"],
         },
