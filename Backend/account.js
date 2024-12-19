@@ -33,21 +33,42 @@ router.post("/account/email", isAuthenticated, async (req, res) => {
     }
 });
 
-router.post("/acount/password", isAuthenticated,  async (req, res) => {
+router.post("/account/password", isAuthenticated,  async (req, res) => {
     try { 
-        const oldPassword = req.body.oldPassword;
-        const newPassword = req.body.newPassword;
-        const result = await db.query("SELECT password FROM users WHERE id=$1", [req.user.id]);
-        const hash = result.rows[0];
-        const match = await bcrypt.compare(oldPassword, hash);
+        const { oldPassword, newPassword } = req.body;
 
-        if (match) {
-            const hashedPassword = await bcrypt.hash(newPassword, 10);
-            await db.query("UPDATE users SET password=$1 WHERE id=$2", [hashedPassword, req.user.id]);
-            res.status(200).json({ message: "Password is updated successfully!" });
-        } else {
-            res.status(500).json({ error });
+        if (!newPassword || newPassword.length < 8) {
+            return res.status(400).json({ message: "New password must be at least 8 characters long." });
         }
+
+        const result = await db.query("SELECT password FROM users WHERE id=$1", [req.user.id]);
+        if (result.rows.length === 0) {
+            return res.status(404).json({ message: "User not found." });
+        }
+
+        const storedPasswordHash = result.rows[0].password;
+        const isMatch = await bcrypt.compare(oldPassword, storedPasswordHash);
+        if (!isMatch) {
+            return res.status(401).json({ message: "Invalid old password." });
+        }
+
+        const isSamePassword = await bcrypt.compare(newPassword, storedPasswordHash);
+        if (isSamePassword) {
+            return res.status(400).json({ message: "New password cannot be the same as the old password." });
+        }
+
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+        await db.query("UPDATE users SET password=$1 WHERE id=$2", [hashedPassword, req.user.id]);
+
+        // Log the user out
+        req.logout((err) => {
+            if (err) {
+                console.error("Error logging out user:", err);
+                return res.status(500).json({ message: "Password updated, but there was an error logging you out. Please log in again." });
+            }
+
+            res.status(200).json({ message: "Password updated successfully. Please log in again." });
+        });
     } catch (error) {
         res.status(500).json({ error });
     }

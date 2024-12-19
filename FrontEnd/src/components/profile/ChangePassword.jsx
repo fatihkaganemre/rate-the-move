@@ -1,11 +1,15 @@
 import React, { useState } from "react";
 import { CSSTransition } from "react-transition-group";
 import "./ChangePassword.css";
+import InformationPopup from "../common/InformationPopup";
+import useLogout from '../../hooks/useLogout';
 
 function ChangePassword() {
     const [isVisible, setIsVisible] = useState(false);
     const [oldPassword, setOldPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
+    const [isInformationPopupOpen, setInformationPopupOpen] = useState(false);
+    const logout = useLogout();
 
     const handleToggle = () => {
         setIsVisible(!isVisible);
@@ -21,12 +25,28 @@ function ChangePassword() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log("Old Password:", oldPassword);
-        console.log("New Password:", newPassword);
+        changePassword();
+    };
 
-        
+    function changePassword() {
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ oldPassword, newPassword })
+        };
+      
+        fetch('/account/password', requestOptions)
+        .then(response => response.json())
+        .then(() => { setInformationPopupOpen(true) })
+        .catch((error) => alert(error))
+    };
 
-        // Add validation and API call logic here
+    const handleInformationPopupOkTap = () => {
+        setInformationPopupOpen(false);
+        setIsVisible(false);
+        setOldPassword("");
+        setNewPassword("");
+        logout();
     };
 
     return (
@@ -49,7 +69,6 @@ function ChangePassword() {
                         onChange={handleOldPasswordChange}
                         required
                     />
-
                     <label htmlFor="newPassword">New Password:</label>
                     <input
                         type="password"
@@ -64,6 +83,11 @@ function ChangePassword() {
                     </button>
                 </form>
             </CSSTransition>
+            <InformationPopup
+                isOpen={isInformationPopupOpen}
+                message="Password has been changed"
+                onOk={handleInformationPopupOkTap}
+            />
         </div>
     );
 }

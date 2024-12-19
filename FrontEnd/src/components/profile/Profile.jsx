@@ -3,11 +3,9 @@ import './profile.css'
 import ChangeEmail from "./ChangeEmail";
 import ChangePassword from "./ChangePassword";
 import ConfirmationPopup from "../common/ConfirmationPopup";
-import InformationPopup from "../common/InformationPopup";
 
 function Profile(props) {
     const [isPopupOpen, setIsPopupOpen] = useState(false);
-    const [isInformationPopupOpen, setInformationPopupOpen] = useState(false);
     const confirmRemoveAccount = () => {
         setIsPopupOpen(false);
         removeAccount();
@@ -24,19 +22,6 @@ function Profile(props) {
         fetch('/account', requestOptions)
         .then(response => response.json())
         .then(() => { props.onRemovedAccount() })
-        .catch((error) => alert(error))
-    }
-
-    function changeEmail(email) {
-        const requestOptions = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email })
-        };
-      
-        fetch('/account/email', requestOptions)
-        .then(response => response.json())
-        .then(() => { setInformationPopupOpen(true) })
         .catch((error) => alert(error))
     }
 
@@ -59,8 +44,8 @@ function Profile(props) {
             </div>
             <div className="profileData">
                 <h1>Settings</h1>
-                <ChangeEmail onSubmit={changeEmail}/>
-                <ChangePassword/>
+                <ChangeEmail />
+                <ChangePassword />
                 <button className="btn btn-danger" onClick={handleRemoveAccount}>Remove Account</button>
             </div>
             <ConfirmationPopup
@@ -69,11 +54,6 @@ function Profile(props) {
                 description="Do you really want to remove your account? This action cannot be undone."
                 onConfirm={confirmRemoveAccount}
                 onCancel={cancelRemoveAccount}
-            />
-            <InformationPopup
-                isOpen={isInformationPopupOpen}
-                message="Email has been updated"
-                onOk={ () => setInformationPopupOpen(false) }
             />
         </div>
     )

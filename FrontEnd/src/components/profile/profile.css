@@ -1,7 +1,6 @@
 .mainConteiner {
-    display: flex;
-    flex-direction: row;
-    align-items: stretch;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
     min-height: 100vh;
 }
 

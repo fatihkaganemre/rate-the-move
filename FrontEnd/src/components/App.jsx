@@ -8,13 +8,16 @@ import Login from './authentication/Login';
 import Register from './authentication/Register';
 import Profile from './profile/Profile';
 import Loader from './common/Loader';
+import useLogout from '../hooks/useLogout';
+import { AuthProvider, useAuth } from '../contexts/AuthContext';
 
-function App() {
-  const [isLoggedIn, setLoggedIn] = useState(false);
+function AppContent() {
+  const { isLoggedIn, setIsLoggedIn } = useAuth();
   const [isLoading, setLoading] = useState(true); // New loading state
   const navigate = useNavigate();
   const location = useLocation();
   const [user, setUser] = useState(); 
+  const logout = useLogout();
 
   useEffect(() => {
     checkAuthentication();
@@ -29,30 +32,15 @@ function App() {
       .then((data) => {
           setLoading(false);
           setUser(data.user);
-          setLoggedIn(data.isLoggedIn);
+          setIsLoggedIn(data.isLoggedIn);
           navigate("/moves");
       })
       .catch((error) => {
           alert(error);
-          setLoggedIn(false);
+          setIsLoggedIn(false);
           setLoading(false);
           navigate("/login");
       });
-  }
-
-  function handleSignOut() {
-    const requestOptions = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' }
-    };
-
-    fetch('/logout', requestOptions)
-      .then(response => response.json())
-      .then(() => { 
-        setLoggedIn(false);
-        navigate("/login");
-      })
-      .catch((error) => alert(error.message))
   }
 
   function login(input) {
@@ -65,7 +53,7 @@ function App() {
     fetch('/login', requestOptions)
       .then(response => response.json())
       .then(() => { 
-        setLoggedIn(true);
+        setIsLoggedIn(true);
         navigate("/moves");
       })
       .catch((error) => alert(error.message))
@@ -81,14 +69,14 @@ function App() {
     fetch('/register', requestOptions)
       .then(response => response.json())
       .then(() => { 
-        setLoggedIn(true);
+        setIsLoggedIn(true);
         navigate("/moves");
       })
       .catch((error) => alert(error))
   }
 
   function handleRemovedAccount() {
-    setLoggedIn(false);
+    setIsLoggedIn(false);
     navigate("/login");
   }
 
@@ -99,7 +87,13 @@ function App() {
   function LoggedInUserUI() {
     return (
       <div>
-        {location.pathname !== "/profile" && ( <NavBar onSignOut={handleSignOut} onProfile={handleProfileTapped} userImage={user.image_url || './user-placeholder.svg'} username={user.name}/> )}
+        {location.pathname !== "/profile" && (
+           <NavBar 
+            onSignOut={logout} 
+            onProfile={handleProfileTapped} 
+            userImage={user.image_url || './user-placeholder.svg'} 
+            username={user.name}/> 
+        )}
         <Routes>
           <Route path="/" element={ <MovesGallery /> } />
           <Route path="/moves" element={ <MovesGallery /> } />
@@ -110,7 +104,8 @@ function App() {
               image_url={user.image_url || './user-placeholder.svg'} 
               username={`${user.name} ${user.surname}`} 
               email={user.email}
-              onRemovedAccount={handleRemovedAccount}/> 
+              onRemovedAccount={handleRemovedAccount}
+              /> 
           }/>
         </Routes>
       </div>
@@ -134,4 +129,10 @@ function App() {
     : (<div> {isLoggedIn ? <LoggedInUserUI /> : <LoggedOutUserUI />} </div>);
 }
 
-export default App;
+export default function App() {
+  return (
+      <AuthProvider>
+          <AppContent />
+      </AuthProvider>
+  );
+}
