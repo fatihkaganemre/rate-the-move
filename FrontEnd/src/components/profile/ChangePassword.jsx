@@ -2,14 +2,14 @@ import React, { useState } from "react";
 import { CSSTransition } from "react-transition-group";
 import "./ChangePassword.css";
 import InformationPopup from "../common/InformationPopup";
-import useLogout from '../../hooks/useLogout';
+import useAuth from '../../hooks/useAuth';
 
 function ChangePassword() {
     const [isVisible, setIsVisible] = useState(false);
     const [oldPassword, setOldPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
     const [isInformationPopupOpen, setInformationPopupOpen] = useState(false);
-    const logout = useLogout();
+    const { logout } = useAuth();
 
     const handleToggle = () => {
         setIsVisible(!isVisible);

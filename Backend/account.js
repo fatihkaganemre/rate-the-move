@@ -37,7 +37,7 @@ router.post("/account/password", isAuthenticated,  async (req, res) => {
     try { 
         const { oldPassword, newPassword } = req.body;
 
-        if (!newPassword || newPassword.length < 8) {
+        if (!newPassword) {
             return res.status(400).json({ message: "New password must be at least 8 characters long." });
         }
 
@@ -63,7 +63,6 @@ router.post("/account/password", isAuthenticated,  async (req, res) => {
         // Log the user out
         req.logout((err) => {
             if (err) {
-                console.error("Error logging out user:", err);
                 return res.status(500).json({ message: "Password updated, but there was an error logging you out. Please log in again." });
             }
 

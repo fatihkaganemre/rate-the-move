@@ -8,16 +8,16 @@ import Login from './authentication/Login';
 import Register from './authentication/Register';
 import Profile from './profile/Profile';
 import Loader from './common/Loader';
-import useLogout from '../hooks/useLogout';
-import { AuthProvider, useAuth } from '../contexts/AuthContext';
+import useAuth from '../hooks/useAuth';
+import { AuthProvider, useAuthContext } from '../contexts/AuthContext';
 
 function AppContent() {
-  const { isLoggedIn, setIsLoggedIn } = useAuth();
+  const { isLoggedIn, setIsLoggedIn } = useAuthContext();
   const [isLoading, setLoading] = useState(true); // New loading state
   const navigate = useNavigate();
   const location = useLocation();
   const [user, setUser] = useState(); 
-  const logout = useLogout();
+  const { logout, register, login } = useAuth();
 
   useEffect(() => {
     checkAuthentication();
@@ -41,38 +41,6 @@ function AppContent() {
           setLoading(false);
           navigate("/login");
       });
-  }
-
-  function login(input) {
-    const requestOptions = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({username: input.email, password: input.password})
-    };
-
-    fetch('/login', requestOptions)
-      .then(response => response.json())
-      .then(() => { 
-        setIsLoggedIn(true);
-        navigate("/moves");
-      })
-      .catch((error) => alert(error.message))
-  }
-
-  function register(input) {
-    const requestOptions = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(input)
-    };
-
-    fetch('/register', requestOptions)
-      .then(response => response.json())
-      .then(() => { 
-        setIsLoggedIn(true);
-        navigate("/moves");
-      })
-      .catch((error) => alert(error))
   }
 
   function handleRemovedAccount() {

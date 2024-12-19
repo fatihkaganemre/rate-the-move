@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { CSSTransition } from "react-transition-group";
 import "./ChangeEmail.css"; 
 import InformationPopup from "../common/InformationPopup";
-import useLogout from '../../hooks/useLogout';
+import useAuth from '../../hooks/useAuth';
 
 function ChangeEmail() {
     const [isVisible, setIsVisible] = useState(false);
@@ -10,7 +10,7 @@ function ChangeEmail() {
     const [isInformationPopupOpen, setInformationPopupOpen] = useState(false);
     const handleButtonClick = () => { setIsVisible(!isVisible) };
     const handleEmailChange = (event) => { setEmail(event.target.value) };
-    const logout = useLogout();
+    const { logout } = useAuth();
 
     const handleSubmit = (event) => {
         event.preventDefault();
