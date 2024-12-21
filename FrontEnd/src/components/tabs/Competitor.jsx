@@ -12,7 +12,7 @@ function Competitor(props) {
             <h1>{props.name}</h1>
             <h5>Level {props.level}</h5>
             <h5>Number of Moves: {props.numberOfMoves}</h5>
-            <button onClick={props.onCheckTheMoves} type="submit" className="btn btn-primary">
+            <button onClick={props.onCheckTheMoves} type="submit" className="btn btn-light">
                 Check the moves
             </button>
         </div>

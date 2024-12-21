@@ -1,0 +1,114 @@
+.myMove-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    width: 500px;
+    background-color: #50125c;
+    color: white;
+    margin: 10px;
+    padding: 20px;
+    border-radius: 25px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    object-fit: cover; /* Ensures placeholder or user images look good */
+    position: relative;
+}
+
+.myMove-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%; /* Ensures the line spans full width */
+    margin-bottom: 10px;
+    position: relative;
+}
+
+.myMove-info {
+    text-align: center;
+    width: 100%; /* Match the container width */
+}
+
+/* Ensure all videos are the same size */
+.myMove-video {
+    width: 100%; /* Full width of the card */
+    height: 250px;
+    object-fit: fill; /* Ensures consistent aspect ratio */
+    border-radius: 10px;
+    margin: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.editIcon {
+    position: absolute;
+    bottom: -15px;
+    right: 10px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: white;
+    color: rebeccapurple;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+}
+
+.removeIcon {
+    position: absolute;
+    bottom: -15px;
+    right: 60px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: white;
+    color: rebeccapurple;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 768px) {
+    .myMove-container {
+        width: 90%; /* Full width with padding */
+        margin: 10px auto;
+    }
+
+    .myMove-user img {
+        width: 40px; /* Smaller user image */
+        height: 40px;
+    }
+
+    .myMove-title {
+        font-size: 16px;
+    }
+
+    .myMove-description {
+        font-size: 12px;
+    }
+
+    .myMove-video {
+        max-height: 180px; /* Adjust height for smaller screens */
+    }
+}
+
+@media (max-width: 480px) {
+    .myMove-container {
+        padding: 10px;
+    }
+
+    .myMove-title {
+        font-size: 14px;
+    }
+
+    .myMove-description {
+        font-size: 11px;
+    }
+
+    .myMove-video {
+        max-height: 150px; /* Adjust height for very small screens */
+    }
+}

@@ -10,6 +10,7 @@ import Profile from './profile/Profile';
 import Loader from './common/Loader';
 import useAuth from '../hooks/useAuth';
 import { AuthProvider, useAuthContext } from '../contexts/AuthContext';
+import MyMovesGallery from './tabs/MyMovesGallery';
 
 function AppContent() {
   const { isLoggedIn, setIsLoggedIn } = useAuthContext();
@@ -32,6 +33,8 @@ function AppContent() {
       .then((data) => {
           setLoading(false);
           setUser(data.user);
+          console.log(user);
+          console.log(data.user.type);
           setIsLoggedIn(data.isLoggedIn);
           navigate("/moves");
       })
@@ -50,7 +53,6 @@ function AppContent() {
 
   const handleRegisterTapped = () => navigate("/register");
   const handleCancelTapped = () => navigate("/login");
-  const handleProfileTapped = () => navigate("/profile");
 
   function LoggedInUserUI() {
     return (
@@ -58,13 +60,13 @@ function AppContent() {
         {location.pathname !== "/profile" && (
            <NavBar 
             onSignOut={logout} 
-            onProfile={handleProfileTapped} 
             userImage={user.image_url || './user-placeholder.svg'} 
-            username={user.name}/> 
+            username={user.name}
+            userType={user.type}/> 
         )}
         <Routes>
-          <Route path="/" element={ <MovesGallery /> } />
-          <Route path="/moves" element={ <MovesGallery /> } />
+          <Route path="/" element={user.type === "competitor" ? <MyMovesGallery /> : <MovesGallery />}  />
+          <Route path="/moves" element={user.type === "competitor" ? <MyMovesGallery /> : <MovesGallery />}  />
           <Route path="/ratings" element={ <RatingsGallery /> }/>
           <Route path="/competitors" element= { <CompetitorsGallery /> }/>
           <Route path="/profile" element= { 

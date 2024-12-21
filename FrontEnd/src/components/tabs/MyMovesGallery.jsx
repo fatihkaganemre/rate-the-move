@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from "react";
-import Move from "./Move";
 import Loader from "../common/Loader";
 import SearchComponent from "../common/Search";
+import MyMove from "./MyMove";
 
-function MovesGallery() {
+function MyMovesGallery() {
     const [moves, setMoves] = useState([]);
     const [filteredMoves, setFilteredMoves] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
-    const [isSubmitting, setIsSubmitting] = useState(false);
 
     useEffect(() => {
         fetchMoves();
@@ -26,39 +25,6 @@ function MovesGallery() {
             })
             .catch((error) => alert(error.message))
     }
-
-    function handleOnRated(rate, id) {
-        setMoves(prevMoves => {
-            return prevMoves.map((move) => { return move.id === id ? { ...move, rate } : move });
-        });
-    }
-
-    function handleSubmitRating(event, id) {
-        event.preventDefault();
-        setIsSubmitting(true);
-        const formData = new FormData(event.currentTarget);
-        const rate = Number(formData.get("rate"));
-        const comment =  formData.get("comment");
-
-        const requestOptions = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ id: id, rate: rate, comment: comment})
-        };
-    
-        fetch('/rate', requestOptions)
-            .then(response => response.json())
-            .then(() => { 
-                setMoves( (prevMoves) => { 
-                    const newMoves = prevMoves.filter((move) => move.id !== id);
-                    setFilteredMoves(newMoves);
-                    return newMoves
-                });
-                
-                setIsSubmitting(false);
-            })
-            .catch((error) => alert(error.message))
-    } 
 
     function handleSearch(query) {
         const lowercasedQuery = query.toLowerCase();
@@ -80,18 +46,13 @@ function MovesGallery() {
             <div className="moves-gallery">
                 { filteredMoves.map( (move) => { 
                     return (
-                        <Move 
+                        <MyMove 
                             key={move.id} 
                             id={move.id} 
-                            userName= {move.user.name}
-                            userImage= {move.user.image_url}
                             title={move.title} 
                             description={move.description} 
                             date={move.date}
                             videoURL={move.videoURL} 
-                            onRated={handleOnRated}
-                            onSubmitRating={handleSubmitRating}
-                            isSubmitting={isSubmitting}
                         />
                     );
                 }) } 
@@ -100,4 +61,4 @@ function MovesGallery() {
     )
 }
 
-export default MovesGallery;
+export default MyMovesGallery;
