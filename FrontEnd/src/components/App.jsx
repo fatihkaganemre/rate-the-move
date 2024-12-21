@@ -30,7 +30,6 @@ function AppContent() {
           throw new Error("Not authenticated");
       })
       .then((data) => {
-          setLoggedIn(data.isLoggedIn);
           setLoading(false);
           setUser(data.user);
           setIsLoggedIn(data.isLoggedIn);
