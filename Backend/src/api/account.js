@@ -2,7 +2,7 @@ import express from 'express';
 import db from './db.js';
 import bcrypt from 'bcrypt';
 
-const router = express.Router();
+export const accountRoutes = express.Router();
 
 const isAuthenticated = (req, res, next) => {
     if (req.user) {
@@ -11,7 +11,7 @@ const isAuthenticated = (req, res, next) => {
     res.status(401).json({ message: "Unauthorized" });
 };
 
-router.delete("/account", isAuthenticated,  async (req, res) => {
+accountRoutes.delete("/account", isAuthenticated,  async (req, res) => {
     try {
         await db.query("DELETE FROM users WHERE id = $1", [req.user.id]);
         req.logout(error => {
@@ -23,7 +23,7 @@ router.delete("/account", isAuthenticated,  async (req, res) => {
     }
 });
 
-router.post("/account/email", isAuthenticated, async (req, res) => {
+accountRoutes.post("/account/email", isAuthenticated, async (req, res) => {
     try { 
         const email = req.body.email;
         await db.query("UPDATE users SET email=$1 WHERE id=$2", [email, req.user.id]);
@@ -33,7 +33,7 @@ router.post("/account/email", isAuthenticated, async (req, res) => {
     }
 });
 
-router.post("/account/password", isAuthenticated,  async (req, res) => {
+accountRoutes.post("/account/password", isAuthenticated,  async (req, res) => {
     try { 
         const { oldPassword, newPassword } = req.body;
 
@@ -72,5 +72,3 @@ router.post("/account/password", isAuthenticated,  async (req, res) => {
         res.status(500).json({ error });
     }
 });
-
-export default router;

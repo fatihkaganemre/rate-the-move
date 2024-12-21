@@ -12,9 +12,10 @@ import bodyParser from "body-parser";
 import { fileURLToPath } from "url";
 
 import { competitorsRoutes } from "./api/competitors.js";
-import { moviesRoutes } from "./api/movies.js";
+import { movesRoutes } from "./api/movies.js";
 import { ratingsRoutes } from "./api/ratings.js";
-import authRoutes from "./api/authentication.js";
+import { authenticationRoutes } from "./api/authentication.js";
+import { accountRoutes } from "./api/account.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
