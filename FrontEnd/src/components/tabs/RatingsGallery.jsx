@@ -14,7 +14,7 @@ function RatingsGallery() {
 
     function fetchRatings() {
         setIsLoading(true);
-        fetch('/ratings') 
+        fetch('/api/ratings') 
           .then(response => response.json())
           .then(data => { 
             setRatings(data.ratings);
