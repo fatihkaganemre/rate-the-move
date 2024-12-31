@@ -19,7 +19,7 @@ function Profile(props) {
             headers: { 'Content-Type': 'application/json' }
         };
       
-        fetch('/account', requestOptions)
+        fetch('/api/account', requestOptions)
         .then(response => response.json())
         .then(() => { props.onRemovedAccount() })
         .catch((error) => alert(error))

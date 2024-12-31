@@ -37,12 +37,16 @@ authenticationRoutes.post("/logout", (req, res) => {
     });
 });
 
+authenticationRoutes.get("/auth/google",
+    passport.authenticate("google", { scope: ["profile", "email"], })
+);
+
 // Handle callback after Google authentication
 authenticationRoutes.get("/auth/google/callback", passport.authenticate("google"), (req, res) => {
     if (req.user) {
-        res.redirect("http://localhost:3000");
+        res.redirect(`${process.env.WEBAPP_URL}`);
     } else {
-        res.redirect("http://localhost:3000/login");
+        res.redirect(`${process.env.WEBAPP_URL}/login`);
     }
 });
 

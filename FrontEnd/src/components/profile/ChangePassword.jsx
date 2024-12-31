@@ -35,7 +35,7 @@ function ChangePassword() {
             body: JSON.stringify({ oldPassword, newPassword })
         };
       
-        fetch('/account/password', requestOptions)
+        fetch('/api/account/password', requestOptions)
         .then(response => response.json())
         .then(() => { setInformationPopupOpen(true) })
         .catch((error) => alert(error))

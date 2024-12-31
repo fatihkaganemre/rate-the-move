@@ -7,7 +7,7 @@ function useAuth() {
 
     const logout = async () => {
         try {
-            const response = await fetch("/logout", {
+            const response = await fetch("/api/logout", {
                 method: "POST",
                 credentials: "include",
             });
@@ -32,7 +32,7 @@ function useAuth() {
             body: JSON.stringify({username: input.email, password: input.password})
         };
     
-        fetch('/login', requestOptions)
+        fetch('/api/login', requestOptions)
           .then(response => response.json())
           .then(() => { 
             setIsLoggedIn(true);
@@ -48,7 +48,7 @@ function useAuth() {
           body: JSON.stringify(input)
         };
     
-        fetch('/register', requestOptions)
+        fetch('/api/register', requestOptions)
           .then(response => response.json())
           .then(() => { 
             setIsLoggedIn(true);
