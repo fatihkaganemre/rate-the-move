@@ -2,7 +2,7 @@ import pg from 'pg';
 import env from "dotenv";
 
 env.config();
-const db = new pg.Client({
+export const db = new pg.Client({
     user: process.env.PG_USER,
     host: process.env.PG_HOST,
     database: process.env.PG_DATABASE,
@@ -17,5 +17,3 @@ db.connect(err => {
         console.log("Database connected successfully.");
     }
 });
-
-export default db;

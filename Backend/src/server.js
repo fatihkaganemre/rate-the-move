@@ -7,7 +7,7 @@ import bcrypt from "bcrypt";
 import path, { dirname }  from "path";
 import cors from "cors";
 import env from "dotenv";
-import db from './db/db.js';
+import { db } from './db/db.js';
 import bodyParser from "body-parser";
 import { fileURLToPath } from "url";
 

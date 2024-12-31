@@ -1,7 +1,7 @@
 import express from 'express';
 import bcrypt from 'bcrypt';
 import passport from 'passport';
-import db from '../db/db.js';
+import { db } from '../db/db.js';
 
 export const authenticationRoutes = express.Router();
 
