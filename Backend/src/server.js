@@ -12,7 +12,7 @@ import bodyParser from "body-parser";
 import { fileURLToPath } from "url";
 
 import { competitorsRoutes } from "./api/competitors.js";
-import { moviesRoutes } from "./api/movies.js";
+import { movesRoutes } from "./api/moves.js";
 import { ratingsRoutes } from "./api/ratings.js";
 import { authenticationRoutes } from "./api/authentication.js";
 import { accountRoutes } from "./api/account.js";
@@ -51,7 +51,7 @@ app.use(passport.session());
 // Routes
 app.use(competitorsRoutes);
 app.use(authenticationRoutes);
-app.use(moviesRoutes);
+app.use(movesRoutes);
 app.use(ratingsRoutes);
 app.use(accountRoutes);
 
@@ -82,16 +82,13 @@ passport.use(
         async (accessToken, refreshToken, profile, done) => {
             try {
                 const result = await db.query("SELECT * FROM users WHERE email = $1", [profile.email]);
-                console.log(result.rows)
                 if (result.rows.length === 0) {
-                    console.log("adding new user to database")
                     const newUser = await db.query(
                         "INSERT INTO users (team_id, name, surname, image_url, email, password, type, level) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)",
                         [1, profile.given_name, profile.family_name, profile.picture, profile.email, "google", "coach", null]
                     );
                     return done(null, newUser.rows[0]);
                 } else {
-                    console.log("Using existing user from database")
                     return done(null, result.rows[0]);
                 }
             } catch (error) {
