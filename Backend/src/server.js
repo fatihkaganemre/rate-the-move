@@ -12,7 +12,7 @@ import bodyParser from "body-parser";
 import { fileURLToPath } from "url";
 
 import { competitorsRoutes } from "./api/competitors.js";
-import { moviesRoutes } from "./api/movies.js";
+import { movesRoutes } from "./api/moves.js";
 import { ratingsRoutes } from "./api/ratings.js";
 import { authenticationRoutes } from "./api/authentication.js";
 import { accountRoutes } from "./api/account.js";
@@ -51,7 +51,7 @@ app.use(passport.session());
 // Routes
 app.use(competitorsRoutes);
 app.use(authenticationRoutes);
-app.use(moviesRoutes);
+app.use(movesRoutes);
 app.use(ratingsRoutes);
 app.use(accountRoutes);
 

@@ -2,9 +2,9 @@ import express from 'express';
 import { db } from '../db/db.js';
 import Queries from "../db/queries.js";
 
-const router = express.Router();
+export const movesRoutes = express.Router();
 
-router.get("/moves", async (req, res) => {
+movesRoutes.get("/moves", async (req, res) => {
     try {
         const movesResult = await db.query(Queries.allMoves);
         const usersResult = await db.query("SELECT * FROM users WHERE type = $1", ['competitor']);
@@ -28,5 +28,3 @@ router.get("/moves", async (req, res) => {
         return res.status(400).json({ error: "Bad request" });
     }
 });
-
-export default router;
