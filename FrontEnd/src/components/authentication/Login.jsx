@@ -17,7 +17,7 @@ function Login(props) {
     };
 
     const handleGoogleLogin = () => {
-        window.location.href = "http://localhost/api/auth/google";
+        window.location.href = "/api/auth/google";
     };
     
 
