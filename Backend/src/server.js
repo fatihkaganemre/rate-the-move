@@ -75,23 +75,20 @@ passport.use(
         {
         clientID: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-        callbackURL: `${process.env.WEBAPP_URL || "http://localhost:3000"}/api/auth/google/callback`,
+        callbackURL: `${process.env.WEBAPP_URL}/api/auth/google/callback`,
         userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo",
         scope: ["profile", "email"],
         },
         async (accessToken, refreshToken, profile, done) => {
             try {
                 const result = await db.query("SELECT * FROM users WHERE email = $1", [profile.email]);
-                console.log(result.rows)
                 if (result.rows.length === 0) {
-                    console.log("adding new user to database")
                     const newUser = await db.query(
                         "INSERT INTO users (team_id, name, surname, image_url, email, password, type, level) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)",
                         [1, profile.given_name, profile.family_name, profile.picture, profile.email, "google", "coach", null]
                     );
                     return done(null, newUser.rows[0]);
                 } else {
-                    console.log("Using existing user from database")
                     return done(null, result.rows[0]);
                 }
             } catch (error) {
