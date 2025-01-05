@@ -35,7 +35,8 @@ services:
   buildCommand: npm install && npm run build
   staticPublishPath: build
   envVars:
-    
+  - key: PG_PORT
+    sync: true
   routes:
   - type: redirect
     source: /api/
