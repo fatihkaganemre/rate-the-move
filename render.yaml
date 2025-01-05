@@ -36,7 +36,7 @@ services:
   staticPublishPath: build
   envVars:
   - key: PG_PORT
-    sync: true
+    value: 5432
   routes:
   - type: redirect
     source: /api/
