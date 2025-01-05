@@ -1,0 +1,44 @@
+# Exported from Render on 2025-01-05T20:04:21Z
+services:
+- type: web
+  name: rate-the-move
+  runtime: node
+  repo: https://github.com/fatihkaganemre/rate-the-move
+  plan: free
+  envVars:
+  - key: PG_PORT
+    sync: false
+  - key: PG_PASSWORD
+    sync: false
+  - key: PG_DATABASE
+    sync: false
+  - key: PG_HOST
+    sync: false
+  - key: PG_USER
+    sync: false
+  - key: SESSION_SECRET
+    sync: false
+  - key: GOOGLE_CLIENT_SECRET
+    sync: false
+  - key: GOOGLE_CLIENT_ID
+    sync: false
+  - key: PORT
+    sync: false
+  region: oregon
+  buildCommand: npm ci
+  startCommand: node ./src/server.js
+  rootDir: Backend
+- type: web
+  name: Rate-The-Move
+  runtime: static
+  repo: https://github.com/fatihkaganemre/rate-the-move
+  buildCommand: npm install && npm run build
+  staticPublishPath: build
+  envVars:
+    
+  routes:
+  - type: redirect
+    source: /api/
+    destination: https://rate-the-move.onrender.com
+  rootDir: FrontEnd
+version: "1"
