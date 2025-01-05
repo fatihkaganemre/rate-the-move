@@ -38,8 +38,8 @@ services:
   - key: PG_PORT
     value: 5432
   routes:
-  - type: redirect
-    source: /api/
-    destination: https://rate-the-move.onrender.com
+  - type: rewrite
+    source: /api/*
+    destination: https://rate-the-move.onrender.com/*
   rootDir: FrontEnd
 version: "1"
