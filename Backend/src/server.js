@@ -55,6 +55,7 @@ app.use(movesRoutes);
 app.use(ratingsRoutes);
 app.use(accountRoutes);
 
+console.log(`Connecting with webapp ${process.env.WEBAPP_URL}`)
 // Passport Configuration
 passport.use(
     new LocalStrategy(async (username, password, done) => {
