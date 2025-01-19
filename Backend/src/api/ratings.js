@@ -7,7 +7,6 @@ ratingsRoutes.post("/rate", async (req, res) => {
     const coachId = req.user.id; 
     if (coachId === null) { return res.status(400).json({ error: "Bad request" }); }
     const {id, rate, comment} = req.body;
-    console.log(req.body);
     try {
         await db.query(
             "INSERT INTO ratings (move_id, coach_id, rate, comment) VALUES ($1, $2, $3, $4)",

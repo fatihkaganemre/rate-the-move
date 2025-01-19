@@ -28,10 +28,10 @@ function Profile(props) {
     return (
         <div className="mainConteiner">
             <div className="profilePhotoName">
-                <h2 className="userName">{props.username}</h2>
+                <h2 className="userName">{`${props.user.name} ${props.user.surname}`}</h2>
                 <div className="profileImageContainer">
                     <img
-                        src={props.image_url || "./user-placeholder.svg"}
+                        src={props.user.image_url || "./user-placeholder.svg"}
                         alt="Profile image"
                         className="profileImage"
                         referrerPolicy="no-referrer"
@@ -40,12 +40,12 @@ function Profile(props) {
                         <i className="fa fa-camera" aria-hidden="true"></i>
                     </div>
                 </div>
-                <h5 className="featurette-heading fw-normal lh-1">{props.email}</h5>
+                <h5 className="featurette-heading fw-normal lh-1">{props.user.email}</h5>
             </div>
             <div className="profileData">
                 <h1>Settings</h1>
-                <ChangeEmail />
-                <ChangePassword />
+                { props.user.isThirdPartyLogin === undefined && <ChangeEmail />}
+                { props.user.isThirdPartyLogin && <ChangePassword/>}
                 <button className="btn btn-danger" onClick={handleRemoveAccount}>Remove Account</button>
             </div>
             <ConfirmationPopup

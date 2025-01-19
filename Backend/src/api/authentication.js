@@ -12,7 +12,7 @@ authenticationRoutes.post("/login", passport.authenticate("local"), (req, res) =
 authenticationRoutes.post("/register", async (req, res) => {
     try {
         const { name, surname, email, password, type, teamName } = req.body;
-        const hashedPassword = await bcrypt.hash(password, 10);
+        const hashedPassword = req.user.isThirdPartyLogin ? "thirdPartyLogin" : await bcrypt.hash(password, 10);
         const result = await db.query("SELECT * FROM teams WHERE name = $1", [String(teamName)]);
         const team = result.rows[0];
 
@@ -43,21 +43,24 @@ authenticationRoutes.get("/auth/google",
 
 // Handle callback after Google authentication
 authenticationRoutes.get("/auth/google/callback", passport.authenticate("google"), (req, res) => {
-    if (req.user) {
-        res.redirect(`${process.env.WEBAPP_URL}`);
+    if (req.user.isThirdPartyLogin) {
+        res.redirect(`${process.env.WEBAPP_URL}/register`);
     } else {
-        res.redirect(`${process.env.WEBAPP_URL}/login`);
+        req.login(req.user, (err) => {
+            if (err) return res.status(500).json({ error: "Login failed" });
+            res.redirect(`${process.env.WEBAPP_URL}`);
+        });
     }
 });
 
 authenticationRoutes.get("/auth/check-auth", ensureAuthenticated,  (req, res) => {
     res.status(200).json({
-        isLoggedIn: true,
+        isLoggedIn: req.user.id && true ,
         user: req.user
     });
 });
 
 function ensureAuthenticated(req, res, next) {
     if (req.isAuthenticated()) { return next() };
-    res.status(401).json({ loggedIn: false, message: "User not authenticated" });
+    res.status(401).json({ isLoggedIn: false, message: "User not authenticated" });
 }

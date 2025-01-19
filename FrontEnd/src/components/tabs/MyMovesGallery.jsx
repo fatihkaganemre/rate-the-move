@@ -3,7 +3,7 @@ import Loader from "../common/Loader";
 import SearchComponent from "../common/Search";
 import MyMove from "./MyMove";
 
-function MyMovesGallery() {
+function MyMovesGallery(props) {
     const [moves, setMoves] = useState([]);
     const [filteredMoves, setFilteredMoves] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
@@ -14,16 +14,20 @@ function MyMovesGallery() {
 
     function fetchMoves() {
         setIsLoading(true)
-        fetch('/moves') 
+        fetch('/api/moves') 
             .then(response => response.json())
             .then(data => { 
                 if (data.moves.length > 0) {
-                    setMoves(data.moves);
-                    setFilteredMoves(data.moves);
+                    let myMoves = data.moves.filter(move => move.user.id === props.userId);
+                    setMoves(myMoves);
+                    setFilteredMoves(myMoves);
                 };
                 setIsLoading(false)
             })
-            .catch((error) => alert(error.message))
+            .catch((error) => {
+                setIsLoading(false);
+                alert(error.message);
+            })
     }
 
     function handleSearch(query) {
@@ -42,7 +46,7 @@ function MyMovesGallery() {
                 onQuery={handleSearch}
             />
             <Loader hidden={!isLoading}/>
-            {!isLoading && moves.length === 0 && <h1>No moves found!</h1>}
+            {!isLoading && filteredMoves.length === 0 && <h1>No moves found!</h1>}
             <div className="moves-gallery">
                 { filteredMoves.map( (move) => { 
                     return (

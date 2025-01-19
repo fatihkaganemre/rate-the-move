@@ -3,7 +3,7 @@ import Move from "./Move";
 import Loader from "../common/Loader";
 import SearchComponent from "../common/Search";
 
-function RatingsGallery() {
+function RatingsGallery(props) {
     const [ratings, setRatings] = useState([]);
     const [filteredRatings, setFilteredRatings] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
@@ -17,11 +17,20 @@ function RatingsGallery() {
         fetch('/api/ratings') 
           .then(response => response.json())
           .then(data => { 
-            setRatings(data.ratings);
-            setFilteredRatings(data.ratings);
+            if (props.isCompetitor && props.userId !== null) {
+                let myRatings = data.ratings.filter(rating => rating.user.id === props.userId);
+                initializeViewWith(myRatings);
+            } else {
+                initializeViewWith(data.ratings);
+            }
             setIsLoading(false);
          });
     };
+
+    function initializeViewWith(ratings) {
+        setRatings(ratings);
+        setFilteredRatings(ratings);
+    }
 
     function handleSearch(query) {
         const lowercasedQuery = query.toLowerCase();

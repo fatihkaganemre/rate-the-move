@@ -8,7 +8,6 @@ export const competitorsRoutes = express.Router();
 competitorsRoutes.get("/competitors", async (req, res) => {
     try {
         const result = await db.query("SELECT * FROM users WHERE type=$1", ['competitor']);
-        console.log(result.rows);
         if (result.rows.length === 0) { return res.status(404).json({ error: 'Not found' }) }
         res.json( { competitors: result.rows} )
     } catch {
@@ -21,7 +20,6 @@ competitorsRoutes.get("/searchCompetitors", async (req, res) => {
     try { 
         const query = req.query.q;
         const result = await db.query("SELECT * FROM users WHERE type = 'competitor'");
-
         const competitors = result.rows.filter(competitor =>
             competitor.name.toLowerCase().includes(query.toLowerCase())
         );

@@ -5,6 +5,7 @@ import Queries from "../db/queries.js";
 export const movesRoutes = express.Router();
 
 movesRoutes.get("/moves", async (req, res) => {
+    console.log("fetch moves");
     try {
         const movesResult = await db.query(Queries.allMoves);
         const usersResult = await db.query("SELECT * FROM users WHERE type = $1", ['competitor']);

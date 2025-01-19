@@ -56,6 +56,7 @@ app.use(ratingsRoutes);
 app.use(accountRoutes);
 
 console.log(`Connecting with webapp ${process.env.WEBAPP_URL}`)
+
 // Passport Configuration
 passport.use(
     new LocalStrategy(async (username, password, done) => {
@@ -63,8 +64,9 @@ passport.use(
             const result = await db.query("SELECT * FROM users WHERE email = $1", [username]);
             if (result.rows.length === 0) return done(null, false, { message: "User not found" });
             const user = result.rows[0];
+            if (user.isThirdPartyLogin) { return done(null, false, { message: "Third party login , try with google authentication" }) };
             const isValid = await bcrypt.compare(password, user.password);
-            return isValid ? done(null, user) : done(null, false, { message: "Incorrect password" });
+            return isValid ? done(null, { ...user, isThirdPartyLogin: false }) : done(null, false, { message: "Incorrect password" });
         } catch (error) {
             return done(error);
         }
@@ -81,38 +83,64 @@ passport.use(
         scope: ["profile", "email"],
         },
         async (accessToken, refreshToken, profile, done) => {
-            try {
-                const result = await db.query("SELECT * FROM users WHERE email = $1", [profile.email]);
-                if (result.rows.length === 0) {
-                    const newUser = await db.query(
-                        "INSERT INTO users (team_id, name, surname, image_url, email, password, type, level) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)",
-                        [1, profile.given_name, profile.family_name, profile.picture, profile.email, "google", "coach", null]
-                    );
-                    return done(null, newUser.rows[0]);
-                } else {
-                    return done(null, result.rows[0]);
-                }
-            } catch (error) {
-                return done(error);
+            const result = await db.query("SELECT * FROM users WHERE email = $1", [profile.email]);
+            if (result.rows.length === 0) {
+                return done(null, { 
+                    isThirdPartyLogin: true, 
+                    email: profile.email, 
+                    name: profile.given_name, 
+                    surname: profile.family_name, 
+                    image_url: profile.picture 
+                });
+            } else {
+                return done(null, { ...result.rows[0], isThirdPartyLogin: true });
             }
         }
     )
 );
 
 passport.serializeUser((user, done) => {
-    done(null, user.id)
-});
-
-passport.deserializeUser(async (id, done) => {
     try {
-        const result = await db.query("SELECT * FROM users WHERE id = $1", [id]);
-        if (result.rows.length > 0) {
-            done(null, result.rows[0]); // Attach user data to `req.user`
-        } else {
-            done(null, false);
+        if (user.id) {
+            done(null, { type: "existingUser", id: user.id, isThirdPartyLogin: user.isThirdPartyLogin });
+        } else  {
+            const newUserData = {
+                isThirdPartyLogin: user.isThirdPartyLogin,
+                email: user.email,
+                name: user.name,
+                surname: user.surname,
+                image_url: user.image_url,
+            };
+            const serializedData = `newUser:${JSON.stringify(newUserData)}`;
+            done(null, { type: "newUser", data: serializedData });
         }
     } catch (error) {
-        done(error, null);
+        console.error("Error in serializeUser:", error.message);
+        done(error);
+    }
+});
+
+passport.deserializeUser(async (serializedData, done) => {
+    try {
+        if (serializedData.type === "newUser") {
+            const newUser = JSON.parse(serializedData.data.substring(8));
+            done(null, {
+                isThirdPartyLogin: newUser.isThirdPartyLogin,
+                email: newUser.email,
+                name: newUser.name,
+                surname: newUser.surname,
+                image_url: newUser.image_url,
+            });
+        } else if (serializedData.type === "existingUser") {
+            const result = await db.query("SELECT * FROM users WHERE id = $1", [serializedData.id]);
+            if (result.rows.length === 0) { done(null, false) };
+            done(null, { ...result.rows[0], isThirdPartyLogin: serializedData.isThirdPartyLogin});
+        } else {
+            throw new Error("Unknown user type during deserialization");
+        }
+    } catch (error) {
+        console.error("Error in deserializeUser:", error.message);
+        done(error);
     }
 });
 

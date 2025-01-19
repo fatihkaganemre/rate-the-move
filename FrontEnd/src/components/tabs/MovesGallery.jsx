@@ -24,7 +24,10 @@ function MovesGallery() {
                 };
                 setIsLoading(false)
             })
-            .catch((error) => alert(error.message))
+            .catch((error) => {
+                setIsLoading(false);
+                alert(error.message);
+            })
     }
 
     function handleOnRated(rate, id) {
@@ -76,7 +79,7 @@ function MovesGallery() {
                 onQuery={handleSearch}
             />
             <Loader hidden={!isLoading}/>
-            {!isLoading && moves.length === 0 && <h1>No moves found!</h1>}
+            {!isLoading && filteredMoves.length === 0 && <h1>No moves found!</h1>}
             <div className="moves-gallery">
                 { filteredMoves.map( (move) => { 
                     return (
