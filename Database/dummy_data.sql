@@ -4,11 +4,11 @@ VALUES ('Kuzi', 'The best tem ever');
  
 INSERT INTO users (team_id, name, surname, image_url, email, password, type, level)
 VALUES 
-(1, 'Fatih Kagan', 'Emre', 'https://github.com/mdo.png', 'fatih.coach@test.com', '1234', 'coach', NULL),
-(1, 'Fatih Kagan', 'Emre', 'https://github.com/mdo.png', 'fatih.competitor@test.com', '1234', 'competitor', 1),
-(1, 'Maciej', 'Drazewski', 'https://github.com/mdo.png', 'maciej@test.com', '1234', 'competitor', 2),
-(1, 'Hubert', 'Kaczmarek', 'https://github.com/mdo.png', 'hubert@test.com', '1234', 'competitor', 3),
-(1, 'Kuba', 'Pietrucha', 'https://github.com/mdo.png', 'kuba@test.com', '1234', 'competitor', 4);
+(1, 'Fatih Kagan', 'Emre', 'https://github.com/mdo.png', 'fatih.coach@test.com', '$2b$10$cs0M.oUVKF90i1jwVRw.TOn4B2UTkWehL3h1VWhKDopjcqtI4dj7.', 'coach', NULL), -- password is 1234 (hashed)
+(1, 'Fatih Kagan', 'Emre', 'https://github.com/mdo.png', 'fatih.competitor@test.com', '$2b$10$cs0M.oUVKF90i1jwVRw.TOn4B2UTkWehL3h1VWhKDopjcqtI4dj7.', 'competitor', 1),
+(1, 'Maciej', 'Drazewski', 'https://github.com/mdo.png', 'maciej@test.com', '$2b$10$cs0M.oUVKF90i1jwVRw.TOn4B2UTkWehL3h1VWhKDopjcqtI4dj7.', 'competitor', 2),
+(1, 'Hubert', 'Kaczmarek', 'https://github.com/mdo.png', 'hubert@test.com', '$2b$10$cs0M.oUVKF90i1jwVRw.TOn4B2UTkWehL3h1VWhKDopjcqtI4dj7.', 'competitor', 3),
+(1, 'Kuba', 'Pietrucha', 'https://github.com/mdo.png', 'kuba@test.com', '$2b$10$cs0M.oUVKF90i1jwVRw.TOn4B2UTkWehL3h1VWhKDopjcqtI4dj7.', 'competitor', 4);
 
 INSERT INTO moves (user_id, title, description, date, video_url)
 VALUES 
