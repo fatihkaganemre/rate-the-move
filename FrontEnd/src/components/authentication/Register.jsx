@@ -31,8 +31,6 @@ function Register(props) {
     };
 
     useEffect(() => {
-        console.log("register")
-        console.log(props.user);
         if (props.user) {
             const { name, surname, email } = props.user;
             setInput(prevInput => ({
@@ -67,8 +65,8 @@ function Register(props) {
                                     <label htmlFor="email">Email</label>
                                     <input disabled={props.user && true} id="email" type="email" defaultValue={input.email} className="form-control" name="email" placeholder="Enter email" autoComplete="on" required/>
                                 </div>
-                                { props.user &&
-                                (<div hidden={props.user && true} className="form-group">
+                                { !props.user &&
+                                (<div className="form-group">
                                     <label htmlFor="password">Password</label>
                                     <input id="password" type="password" className="form-control" name="password" placeholder="Enter password" autoComplete="on" required/>
                                 </div>)
