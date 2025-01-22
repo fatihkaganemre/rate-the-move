@@ -12,9 +12,6 @@ function Competitor(props) {
             <h1>{props.name}</h1>
             <h5>Level {props.level}</h5>
             <h5>Number of Moves: {props.numberOfMoves}</h5>
-            <button onClick={props.onCheckTheMoves} type="submit" className="btn btn-light">
-                Check the moves
-            </button>
         </div>
     )
 }
@@ -25,7 +22,7 @@ const styles = {
         height: "100px",
         float: "left",
         marginRight: "20px",
-        borderRadius: "50px"
+        borderRadius: "50px",
     }
 };
 

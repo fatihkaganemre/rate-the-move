@@ -43,7 +43,7 @@ function RatingsGallery(props) {
     return (
         <div className="centered-flex"> 
             <SearchComponent 
-                hidden={isLoading}
+                hidden={isLoading || ratings.length === 0}
                 placeholder="Search rating by title or user"
                 onQuery={handleSearch}
             />
