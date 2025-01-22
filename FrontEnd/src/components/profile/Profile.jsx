@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import './profile.css'
 import ChangeEmail from "./ChangeEmail";
 import ChangePassword from "./ChangePassword";
@@ -12,10 +12,6 @@ function Profile(props) {
     };
     const handleRemoveAccount = () => { setIsPopupOpen(true) };
     const cancelRemoveAccount = () => { setIsPopupOpen(false) };
-
-    useEffect(() => {
-        console.log(props.user);
-    }, []);
 
     function removeAccount() {
         const requestOptions = {
