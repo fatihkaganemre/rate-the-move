@@ -26,7 +26,7 @@ function CompetitorsGallery() {
 
     async function handleSearch(query) {
         try {
-            const response = await fetch(`/api/searchCompetitors?q=${encodeURIComponent(query)}`);  
+            const response = await fetch(`/searchCompetitors?q=${encodeURIComponent(query)}`);  
             if (!response.ok) { throw new Error(`Error: ${response.status} - ${response.statusText}`) }
             const data = await response.json();
             data.competitors.length === 0 ? setTitle("No competitors found") : setCompetitors(data.competitors);
@@ -51,7 +51,7 @@ function CompetitorsGallery() {
                         key={competitor.id}
                         name={competitor.name}
                         level={competitor.level}
-                        numberOfMoves={competitor.numberOfMoves}
+                        numberOfMoves={competitor.number_of_moves}
                         imageURL={competitor.image_url}
                     />
                 );
