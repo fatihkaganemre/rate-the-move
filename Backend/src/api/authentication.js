@@ -17,15 +17,15 @@ authenticationRoutes.post("/register", async (req, res) => {
         const result = await db.query("SELECT * FROM teams WHERE name = $1", [String(teamName)]);
         const team = result.rows[0];
         const level = type.toLowerCase() === "competitor" ? 0 : null
+        const numberOfMoves = type.toLowerCase() === "competitor" ? 0 : null
 
         await db.query(
-            "INSERT INTO users (email, password, name, surname, team_id, type, level) VALUES ($1, $2, $3, $4, $5, $6, $7)",
-            [email, hashedPassword, name, surname, team.id, type.toLowerCase(), level]
+            "INSERT INTO users (email, password, name, surname, team_id, type, level, number_of_moves) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)",
+            [email, hashedPassword, name, surname, team.id, type.toLowerCase(), level, numberOfMoves]
         );
 
         // Retrieve the newly registered user
         const userResult = await db.query("SELECT * FROM users WHERE email = $1", [email]);
-        console.log(req.body.password === null);
         const user = { ...userResult.rows[0], isThirdPartyLogin: req.body.password === null};
 
         if (!result.rows[0]) {
@@ -57,7 +57,7 @@ authenticationRoutes.get("/auth/google",
 
 // Handle callback after Google authentication
 authenticationRoutes.get("/auth/google/callback", passport.authenticate("google"), (req, res) => {
-    if (req.user.isThirdPartyLogin) {
+    if (req.user.isThirdPartyLogin && !req.user.id) {
         res.redirect(`${process.env.WEBAPP_URL}/register`);
     } else {
         req.login(req.user, (err) => {

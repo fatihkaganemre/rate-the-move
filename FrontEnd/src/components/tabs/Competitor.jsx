@@ -10,7 +10,7 @@ function Competitor(props) {
                 referrerPolicy="no-referrer"
             />
             <h1>{props.name}</h1>
-            <h5>Level {props.level}</h5>
+            <h5>Level: {props.level}</h5>
             <h5>Number of Moves: {props.numberOfMoves}</h5>
         </div>
     )

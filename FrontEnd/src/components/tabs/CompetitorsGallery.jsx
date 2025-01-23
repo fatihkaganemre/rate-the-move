@@ -51,7 +51,7 @@ function CompetitorsGallery() {
                         key={competitor.id}
                         name={competitor.name}
                         level={competitor.level}
-                        numberOfMoves={competitor.numberOfMoves}
+                        numberOfMoves={competitor.number_of_moves}
                         imageURL={competitor.image_url}
                     />
                 );
