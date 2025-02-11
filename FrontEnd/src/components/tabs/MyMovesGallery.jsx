@@ -46,6 +46,7 @@ function MyMovesGallery(props) {
                 onQuery={handleSearch}
             />
             <Loader hidden={!isLoading}/>
+            
             {!isLoading && filteredMoves.length === 0 && <h1>No moves found!</h1>}
             <div className="moves-gallery">
                 { filteredMoves.map( (move) => { 
