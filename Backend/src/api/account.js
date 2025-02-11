@@ -1,8 +1,13 @@
 import express from 'express';
 import { db } from '../db/db.js';
 import bcrypt from 'bcrypt';
+import { uploadToCloudinary } from "../helpers/imageUploader.js";
+import { uploadVideoToCloudinary } from '../helpers/videoUploader.js';
+import multer from "multer";
 
 export const accountRoutes = express.Router();
+
+const upload = multer({ storage: multer.memoryStorage() });
 
 const isAuthenticated = (req, res, next) => {
     if (req.user) {
@@ -70,5 +75,43 @@ accountRoutes.post("/account/password", isAuthenticated,  async (req, res) => {
         });
     } catch (error) {
         res.status(500).json({ error });
+    }
+});
+
+accountRoutes.post("/upload-profile-image", upload.single("profileImage"), async (req, res) => {
+    try {
+        if (!req.file) {
+            return res.status(400).json({ success: false, message: "No file uploaded" });
+        }
+        const userId = req.user.id;
+        const imageUrl = await uploadToCloudinary(req.file.buffer);
+
+        // Save URL to PostgreSQL
+        await db.query("UPDATE users SET image_url = $1 WHERE id = $2", [imageUrl, userId]);
+
+        res.json({ success: true, imageUrl });
+    } catch (error) {
+        res.status(500).json({ success: false, message: "Internal Server Error" });
+    }
+});
+
+accountRoutes.post("/upload-video", upload.single("videoFile"), async (req, res) => {
+    try {
+        if (!req.file) {
+            return res.status(400).json({ success: false, message: "No video uploaded" });
+        }
+
+        const video_url = await uploadVideoToCloudinary(req.file.buffer);
+        const date = new Date();
+
+        // Save video URL in PostgreSQL
+        await pool.query(
+            "INSERT INTO moves (user_id, title, description, date, video_url) VALUES ($1, $2, $3, $4, $5)",
+             [req.user.id, req.body.title, req.body.description, date, video_url]
+        );
+
+        res.json({ success: true, video_url });
+    } catch (error) {
+        res.status(500).json({ success: false, message: "Internal Server Error" });
     }
 });

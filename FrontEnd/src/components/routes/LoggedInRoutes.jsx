@@ -12,7 +12,7 @@ import Loader from '../common/Loader';
 function LoggedInRoutes() {
   const location = useLocation();
   const [isCompetitor, setIsCompetitor] = useState();
-  const { user, signOut, isLoading } = useUser();
+  const { user, signOut, reloadUser, isLoading } = useUser();
 
   useEffect( () => {
     if (user) {
@@ -36,7 +36,7 @@ function LoggedInRoutes() {
         <Route path="/moves" element={isCompetitor ? <MyMovesGallery userId={user.id} /> : <MovesGallery />} />
         <Route path="/ratings" element={<RatingsGallery isCompetitor={isCompetitor} />} />
         <Route path="/competitors" element={<CompetitorsGallery />} />
-        <Route path="/profile" element={<Profile user={user} onRemovedAccount={signOut}/>} />
+        <Route path="/profile" element={<Profile user={user} onRemovedAccount={signOut} onUpdate={reloadUser}/>} />
       </Routes>
     </div>
   );
