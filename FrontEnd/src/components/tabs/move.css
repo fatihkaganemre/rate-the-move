@@ -1,0 +1,45 @@
+.user {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    float: left;
+    margin-right: 20px;
+}
+
+.video {
+    height: auto; /* Keeps aspect ratio intact */
+    margin-top: 20px; /* Adds spacing from the elements above */
+    border-radius: 10px; /* Optional, for rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional, for a polished look */
+}
+
+.submit-btn {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100px;
+    height: 40px;
+}
+
+.submit-btn:disabled {
+    background-color: grey;
+    cursor: not-allowed;
+}
+
+/* Loading spinner */
+.loader {
+    width: 20px;
+    height: 20px;
+    border: 3px solid white;
+    border-top: 3px solid transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
