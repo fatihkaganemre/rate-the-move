@@ -16,10 +16,7 @@ function Login(props) {
         }));
     };
 
-    const handleGoogleLogin = () => {
-        window.location.href = "/api/auth/google";
-    };
-    
+    const handleGoogleLogin = () => { window.location.href = "/api/auth/google" };
 
     return (
         <div className="container mt-5">

@@ -84,7 +84,8 @@ accountRoutes.post("/upload-profile-image", upload.single("profileImage"), async
             return res.status(400).json({ success: false, message: "No file uploaded" });
         }
         const userId = req.user.id;
-        const imageUrl = await uploadToCloudinary(req.file.buffer);
+        //const imageUrl = await uploadToCloudinary(req.file.buffer);
+        const imageUrl = "https://res.cloudinary.com/ddqfvccb3/image/upload/v1739190486/cld-sample.jpg";
 
         // Save URL to PostgreSQL
         await db.query("UPDATE users SET image_url = $1 WHERE id = $2", [imageUrl, userId]);
@@ -101,17 +102,18 @@ accountRoutes.post("/upload-video", upload.single("videoFile"), async (req, res)
             return res.status(400).json({ success: false, message: "No video uploaded" });
         }
 
-        const video_url = await uploadVideoToCloudinary(req.file.buffer);
-        const date = new Date();
+        //const video_url = await uploadVideoToCloudinary(req.file.buffer);
+        const video_url = "https://player.cloudinary.com/embed/?public_id=samples%2Felephants&cloud_name=ddqfvccb3&profile=cld-default";
+        const date = new Date().toLocaleDateString();
 
         // Save video URL in PostgreSQL
-        await pool.query(
+        await db.query(
             "INSERT INTO moves (user_id, title, description, date, video_url) VALUES ($1, $2, $3, $4, $5)",
              [req.user.id, req.body.title, req.body.description, date, video_url]
         );
 
         res.json({ success: true, video_url });
     } catch (error) {
-        res.status(500).json({ success: false, message: "Internal Server Error" });
+        res.status(500).json({ success: false, message: `Error occured while uploading: ${error}` });
     }
 });

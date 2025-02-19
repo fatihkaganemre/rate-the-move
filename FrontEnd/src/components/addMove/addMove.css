@@ -1,0 +1,41 @@
+.add-move-container {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+}
+
+.add-move-card {
+    background-color: #50125c;
+    color: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 30%;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.description {
+    height: 800px;
+}
+
+.upload-btn {
+    width: 100%;
+    padding: 10px;
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+}
+
+.upload-btn:disabled {
+    background-color: grey;
+    cursor: not-allowed;
+}
+
+.upload-btn:hover:not(:disabled) {
+    background-color: #333;
+}

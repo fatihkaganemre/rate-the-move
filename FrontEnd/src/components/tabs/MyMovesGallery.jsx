@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Loader from "../common/Loader";
 import SearchComponent from "../common/Search";
 import MyMove from "./MyMove";
+import './myMovesGallery.css'
 
 function MyMovesGallery(props) {
     const [moves, setMoves] = useState([]);
@@ -46,7 +47,9 @@ function MyMovesGallery(props) {
                 onQuery={handleSearch}
             />
             <Loader hidden={!isLoading}/>
-            
+            <div onClick={props.onAddMove} className="addMoveIcon">
+                <i className="fa fa-plus-circle" aria-hidden="true"></i>
+            </div>
             {!isLoading && filteredMoves.length === 0 && <h1>No moves found!</h1>}
             <div className="moves-gallery">
                 { filteredMoves.map( (move) => { 

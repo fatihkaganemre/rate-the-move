@@ -1,0 +1,19 @@
+.addMoveIcon {
+    width: 100px;
+    height: 100px;
+    display: flex;
+    align-items: center; /* Centers vertically */
+    justify-content: center; /* Centers horizontally */
+    cursor: pointer;
+    color: rebeccapurple;
+    border-top: 10px;
+}
+
+.addMoveIcon i {
+    font-size: 5em;  /* Scale relative to parent */
+    width: 100%;      /* Ensures it fills the parent */
+    height: 100%;     /* Ensures it fills the parent */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
