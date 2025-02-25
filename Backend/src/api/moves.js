@@ -39,3 +39,29 @@ movesRoutes.get("/moves", async (req, res) => {
         return res.status(400).json({ error: "Bad request" });
     }
 });
+
+movesRoutes.delete("/moves/:id", async (req, res) => {
+    const { id } = req.params;
+    try {
+        await db.query("DELETE FROM moves WHERE id = $1", [id]);
+        return res.json({ success: true, message: "Move deleted successfully." });
+    } catch (error) {
+        return res.status(400).json({ error: "Failed to delete move." });
+    }
+});
+
+movesRoutes.put("/moves/:id", async (req, res) => {
+    const { id } = req.params;
+    const { title, description } = req.body;
+    console.log(req.body);
+
+    try {
+        await db.query(
+            "UPDATE moves SET title = $1, description = $2 WHERE id = $3",
+            [title, description, id]
+        );
+        return res.json({ success: true, message: "Move updated successfully." });
+    } catch (error) {
+        return res.status(400).json({ error: "Failed to update move." });
+    }
+});

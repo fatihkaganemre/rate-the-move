@@ -10,7 +10,7 @@ function Rating(props) {
 
     function renderRating(rating) { 
         return (
-            <div key={rating.id} className="comment">
+            <div className="comment">
                 <div className="name">{rating.coachFullName}</div>
                 <div>{constructRatedStars(rating.rate)}</div>
                 <div>{rating.comment}</div>

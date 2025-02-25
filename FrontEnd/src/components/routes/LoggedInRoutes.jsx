@@ -15,7 +15,9 @@ function LoggedInRoutes() {
   const navigate = useNavigate();
   const [isCompetitor, setIsCompetitor] = useState(false);
   const { user, signOut, reloadUser, isLoading } = useUser();
-  const navigateToAddMove = () => { navigate("/addMove")}
+  const [editingMove, setEditingMove] = useState(null);
+
+  const navigateToAddMove = () => { navigate("/addMove") }
   const navigateToMoves = () => { navigate("/moves") }
 
   useEffect( () => {
@@ -23,6 +25,11 @@ function LoggedInRoutes() {
       setIsCompetitor(user.type === 'competitor');
     }
   }, [user]);
+
+  function handleOnEditMove(move) {
+    setEditingMove(move);
+    navigate("/addMove")
+  }
 
   return (
     <div>
@@ -38,37 +45,15 @@ function LoggedInRoutes() {
           )}
 
           <Routes>
-            <Route path="/" element={isCompetitor ? <MyMovesGallery userId={user?.id} /> : <MovesGallery />} />
-            <Route path="/moves" element={isCompetitor ? <MyMovesGallery userId={user?.id} onAddMove={navigateToAddMove} /> : <MovesGallery />} />
+            <Route path="/" element={isCompetitor ? <MyMovesGallery userId={user?.id} onEditMove={handleOnEditMove} /> : <MovesGallery />} />
+            <Route path="/moves" element={isCompetitor ? <MyMovesGallery userId={user?.id} onAddMove={navigateToAddMove} onEditMove={handleOnEditMove} /> : <MovesGallery />} />
             <Route path="/ratings" element={<RatingsGallery isCompetitor={isCompetitor} userId={user?.id} />} />
             <Route path="/competitors" element={<CompetitorsGallery />} />
             <Route path="/profile" element={<Profile user={user} onRemovedAccount={signOut} onUpdate={reloadUser} />} />
-            <Route path="/addMove" element={<AddMove onUpload={navigateToMoves} />} />
+            <Route path="/addMove" element={<AddMove onUpload={navigateToMoves} move={editingMove} />} />
           </Routes>
         </>
       )}
-    </div>
-  );
-
-  return (
-    <div>
-      <Loader hidden={!isLoading} />
-      { (location.pathname !== '/profile' && location.pathname !== '/addMove') && (
-        <NavBar
-          onSignOut={signOut}
-          userImage={user?.image_url || './user-placeholder.svg'}
-          username={user?.name}
-          userType={user?.type}
-        />
-      )}
-      <Routes>
-        <Route path="/" element={isCompetitor ? <MyMovesGallery userId={user.id} /> : <MovesGallery />} />
-        <Route path="/moves" element={isCompetitor ? <MyMovesGallery userId={user.id} onAddMove={navigateToAddMove} /> : <MovesGallery />} />
-        <Route path="/ratings" element={<RatingsGallery isCompetitor={isCompetitor} userId={user.id} />} />
-        <Route path="/competitors" element={<CompetitorsGallery />} />
-        <Route path="/profile" element={<Profile user={user} onRemovedAccount={signOut} onUpdate={reloadUser}/>} />
-        <Route path="/addMove" element={<AddMove onUpload={navigateToMoves} />} />
-      </Routes>
     </div>
   );
 }
