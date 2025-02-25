@@ -47,7 +47,7 @@ ratingsRoutes.get("/ratings", async (req, res) => {
                         comment: rating.comment
                     }
                 });
-            const user = usersResult.rows.filter(user => user.id === move.user_id);
+            const user = usersResult.rows.find(user => user.id === move.user_id);
             return {
                 move: move, 
                 user: user,
@@ -59,3 +59,4 @@ ratingsRoutes.get("/ratings", async (req, res) => {
         return res.status(400).json({ error: "Bad request" });
     }
 });
+

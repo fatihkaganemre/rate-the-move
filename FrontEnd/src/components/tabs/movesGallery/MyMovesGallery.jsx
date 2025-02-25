@@ -8,6 +8,7 @@ function MyMovesGallery(props) {
     const [moves, setMoves] = useState([]);
     const [filteredMoves, setFilteredMoves] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [isRemovingMoves, setIsRemovingMoves] = useState([]);
 
     useEffect(() => {
         fetchMoves();
@@ -39,6 +40,34 @@ function MyMovesGallery(props) {
         setFilteredMoves(filtered);
     };
 
+    function remove(id) {
+        setIsRemovingMoves(prev => [...prev, id]);
+
+        fetch(`/api/moves/${id}`, { method: "DELETE" })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    setMoves(moves.filter(move => move.id !== id));
+                    fetchMoves();
+                } else {
+                    alert("Failed to delete move.");
+                }
+            })
+            .catch(error => {
+                alert("Error deleting move: " + error.message);
+            })
+            .finally(() => {
+                setIsRemovingMoves(prev => prev.filter(moveId => moveId !== id)); 
+            });
+    }
+
+    function edit(id) {
+        const move = moves.find(move => move.id === id);
+        if (move) {
+            props.onEditMove(move)
+        }
+    }
+
     return (
         <div className="centered-flex">
             <SearchComponent 
@@ -61,6 +90,9 @@ function MyMovesGallery(props) {
                             description={move.description} 
                             date={move.date}
                             videoURL={move.videoURL} 
+                            isRemoving={isRemovingMoves.includes(move.id)}
+                            onEdit={edit}
+                            onRemove={remove}
                         />
                     );
                 }) } 

@@ -1,10 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import VideoUploader from "./VideoUploader";
 import "./addMove.css"; 
 
 function AddMove(props) {
     const [input, setInput] = useState({ title: "", description: "", videoFile: null });
     const [isLoading, setIsLoading] = useState(false);
+
+    useEffect(() => {
+        if (props.move) {
+            setInput({ title: props.move.title, description: props.move.description, videoFile: null });
+        }
+    }, []);
 
     function handleOnChange(event) {
         const { name, value } = event.target;
@@ -54,6 +60,66 @@ function AddMove(props) {
         });
     };
 
+    const updateMove = () => {
+        if (!input.title.trim() || !input.description.trim()) {
+            alert("Please fill all fields before submitting.");
+            return;
+        }
+
+        setIsLoading(true);
+
+        const requestOptions = {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                title: input.title,
+                description: input.description,
+            }),
+        };
+
+        fetch(`/api/moves/${props.move.id}`, requestOptions)
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert("Move updated successfully!");
+                    props.onUpload();
+                    setInput({ title: "", description: "", videoFile: null });
+                } else {
+                    alert("Failed to update.");
+                }
+                setIsLoading(false);
+            })
+            .catch(() => {
+                alert("An error occurred while updating.");
+                setIsLoading(false);
+            });
+    };
+
+    const renderVideoSection = () => (
+        props.move ? (
+            <video className="addMove-video" controls>
+                <source src={props.move.videoURL} type="video/mp4" />
+            </video>
+        ) : (
+            <VideoUploader onUpload={handleOnSelectedVideo} />
+        )
+    );
+
+    const renderSubmitButton = () => {
+        return (
+            <>
+                <button 
+                    disabled={isLoading || !input.title.trim() || !input.description.trim() || (!props.move && !input.videoFile)} 
+                    type="button" 
+                    onClick={props.move ? updateMove : uploadVideo} 
+                    className="btn btn-dark upload-btn"
+                >
+                    {isLoading ? "Processing..." : props.move ? "Update Move" : "Upload"}
+                </button>
+            </>
+        )
+    }
+
     return (
         <div className="add-move-container">
             <div className="add-move-card">
@@ -85,17 +151,8 @@ function AddMove(props) {
                                 required 
                             />
                         </div>
-                        <VideoUploader onUpload={handleOnSelectedVideo} />
-                        <div>
-                            <button 
-                                disabled={isLoading || !input.title.trim() || !input.description.trim() || !input.videoFile} 
-                                type="button" 
-                                onClick={uploadVideo} 
-                                className="btn btn-dark upload-btn"
-                            >
-                                {isLoading ? "Uploading..." : "Upload"}
-                            </button>
-                        </div>
+                        { renderVideoSection() }
+                        { renderSubmitButton() }
                     </form>
                 </div>
             </div>

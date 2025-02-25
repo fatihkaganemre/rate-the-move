@@ -2,6 +2,9 @@ import React from "react";
 import './myMove.css';
 
 function MyMove(props) {
+    const edit = () => { props.onEdit(props.id) }
+    const remove = () => { props.onRemove(props.id) }
+
     return (
         <div className="myMove-container">
             <div className="myMove-content">
@@ -15,11 +18,20 @@ function MyMove(props) {
             <video className="myMove-video" controls>
                 <source src={props.videoURL} type="video/mp4" />
             </video>
-            <div className="removeIcon">
-                <i className="fa fa-trash" aria-hidden="true"></i>
-            </div>
-            <div className="editIcon">
-                <i className="fas fa-edit" aria-hidden="true"></i>
+            <div>
+                <div onClick={remove} className="removeIcon">
+                    { props.isRemoving ? (
+                        <div className="loading-spinner">
+                            <i className="fa fa-spinner fa-spin"></i>
+                        </div>
+                    ) : (
+                        <i className="fa fa-trash" aria-hidden="true"></i>
+                    )}
+                </div>
+
+                <div onClick={edit} className="editIcon">
+                    <i className="fa fa-edit" aria-hidden="true"></i>
+                </div>
             </div>
         </div>
     );

@@ -39,3 +39,9 @@
 .upload-btn:hover:not(:disabled) {
     background-color: #333;
 }
+
+.addMove-video {
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
