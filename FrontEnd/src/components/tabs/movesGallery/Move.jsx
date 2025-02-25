@@ -1,12 +1,8 @@
 import React from "react";
-import Stars from "../common/Stars";
+import Stars from "../../common/Stars";
 import './move.css';
 
 function Move(props) {
-    function constructRatedStars() {
-        return [...Array(props.rate)].map((x, index) => <span key={index} className="fa fa-star checked" id="ratedStar" />) 
-    }
-
     function handleSubmit(event) {
         props.onSubmitRating(event, props.id);
     }
@@ -17,22 +13,23 @@ function Move(props) {
 
     return (
         <div className="move">
-            <form disabled={props.isSubmitting} onSubmit={handleSubmit} className="move-form">
+            <form disabled={props.isSubmitting} onSubmit={handleSubmit} className="form">
                 <div>
                     <div className="user">
                         <img src={props.userImage} alt="mdo" width="50" height="50" className="rounded-circle" />
                         <h5>{props.userName}</h5>
                     </div>
-                    <div>
+                    <div className="video-info">
                         <h5>{props.title}</h5>
                         <h6>{props.description}</h6>
                         <div className="move-date">{props.date}</div>
                     </div>
                 </div>
-                <div> { props.rate !== undefined ? constructRatedStars() : <Stars id={props.id} onRated={handleRating} /> } </div>
+                <div> {  <Stars id={props.id} onRated={handleRating} /> } </div>
                 <textarea type="text" placeholder="Write something.." hidden={props.rate !== undefined} name="comment"/>
-                <button disabled={props.isSubmitting} type="submit" className="btn btn-primary" hidden={props.rate !== undefined}>Submit</button>
-                <div className="my-comment" hidden={props.rate === undefined}>Me: {props.comments && props.comments[0]}</div>
+                <button disabled={props.isSubmitting} type="submit" className="btn btn-primary submit-btn " hidden={props.rate !== undefined}>
+                    {props.isSubmitting ? (<span className="loader"></span>) : "Submit"}
+                </button>
             </form>
             <video className="video" controls>
                 <source src={props.videoURL} type="video/mp4" />

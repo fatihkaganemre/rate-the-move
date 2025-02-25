@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import Move from "./Move";
-import Loader from "../common/Loader";
-import SearchComponent from "../common/Search";
+import Rating from "./Rating";
+import Loader from "../../common/Loader";
+import SearchComponent from "../../common/Search";
+import './ratingsGallery.css';
 
 function RatingsGallery(props) {
     const [ratings, setRatings] = useState([]);
@@ -17,12 +18,7 @@ function RatingsGallery(props) {
         fetch('/api/ratings') 
           .then(response => response.json())
           .then(data => { 
-            if (props.isCompetitor && props.userId !== null) {
-                let myRatings = data.ratings.filter(rating => rating.user.id === props.userId);
-                initializeViewWith(myRatings);
-            } else {
-                initializeViewWith(data.ratings);
-            }
+            initializeViewWith(data.ratings);
             setIsLoading(false);
          });
     };
@@ -35,7 +31,7 @@ function RatingsGallery(props) {
     function handleSearch(query) {
         const lowercasedQuery = query.toLowerCase();
         const filtered = ratings.filter(rate => {
-            return rate.title.toLowerCase().includes(lowercasedQuery) || rate.user.name.toLowerCase().includes(lowercasedQuery)
+            return rate.move.title.toLowerCase().includes(lowercasedQuery) || rate.user.name.toLowerCase().includes(lowercasedQuery)
         });
         setFilteredRatings(filtered);
     };
@@ -43,7 +39,7 @@ function RatingsGallery(props) {
     return (
         <div className="centered-flex"> 
             <SearchComponent 
-                hidden={isLoading || ratings.length === 0}
+                hidden={isLoading}
                 placeholder="Search rating by title or user"
                 onQuery={handleSearch}
             />
@@ -52,17 +48,13 @@ function RatingsGallery(props) {
             <div className="ratings-gallery">   
                 { filteredRatings.map( (rating) => { 
                     return (
-                        <Move 
-                            key={rating.id} 
-                            id={rating.id} 
-                            userName={rating.user.name}
+                        <Rating 
+                            key={rating.move.id} 
+                            id={rating.move.id} 
                             userImage={rating.user.image_url}
-                            rate={rating.rate}
-                            title={rating.title} 
-                            description={rating.description} 
-                            date={rating.date}
-                            videoURL={rating.videoURL}
-                            comments={rating.comments}
+                            userName={rating.user.name}
+                            move={rating.move}
+                            rates={rating.rates}
                         />
                     );
                 }) } 

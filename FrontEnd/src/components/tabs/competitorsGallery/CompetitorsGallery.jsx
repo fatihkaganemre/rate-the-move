@@ -1,7 +1,7 @@
 import React , { useState, useEffect } from "react";
 import Competitor from "./Competitor";
-import Loader from "../common/Loader";
-import SearchComponent from "../common/Search";
+import Loader from "../../common/Loader";
+import SearchComponent from "../../common/Search";
 
 function CompetitorsGallery() {
     const [competitors, setCompetitors] = useState([]);

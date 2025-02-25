@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
-import Loader from "../common/Loader";
-import SearchComponent from "../common/Search";
-import MyMove from "./MyMove";
-import './myMovesGallery.css'
+import Move from "./Move";
+import Loader from "../../common/Loader";
+import SearchComponent from "../../common/Search";
 
-function MyMovesGallery(props) {
+function MovesGallery() {
     const [moves, setMoves] = useState([]);
     const [filteredMoves, setFilteredMoves] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [submittingMoveId, setSubmittingMoveId] = useState("");
 
     useEffect(() => {
         fetchMoves();
@@ -19,15 +19,46 @@ function MyMovesGallery(props) {
             .then(response => response.json())
             .then(data => { 
                 if (data.moves.length > 0) {
-                    let myMoves = data.moves.filter(move => move.user.id === props.userId);
-                    setMoves(myMoves);
-                    setFilteredMoves(myMoves);
+                    setMoves(data.moves);
+                    setFilteredMoves(data.moves);
                 };
                 setIsLoading(false)
             })
             .catch((error) => {
                 setIsLoading(false);
                 alert(error.message);
+            })
+    }
+
+    function handleOnRated(rate, id) {
+        setMoves(prevMoves => {
+            return prevMoves.map((move) => { return move.id === id ? { ...move, rate } : move });
+        });
+    }
+
+    function handleSubmitRating(event, id) {
+        setSubmittingMoveId(id);
+    
+        const formData = new FormData(event.currentTarget);
+        const rate = Number(formData.get("rate"));
+        const comment = formData.get("comment");
+    
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id, rate, comment })
+        };
+    
+        fetch('/api/rate', requestOptions)
+            .then(response => response.json())
+            .then(() => { 
+                setMoves((prevMoves) => prevMoves.filter((move) => move.id !== id));
+                setFilteredMoves((prevMoves) => prevMoves.filter((move) => move.id !== id));
+                setSubmittingMoveId(null);
+            })
+            .catch((error) => {
+                alert(error.message);
+                setSubmittingMoveId(null);
             })
     }
 
@@ -47,20 +78,22 @@ function MyMovesGallery(props) {
                 onQuery={handleSearch}
             />
             <Loader hidden={!isLoading}/>
-            <div onClick={props.onAddMove} className="addMoveIcon">
-                <i className="fa fa-plus-circle" aria-hidden="true"></i>
-            </div>
             {!isLoading && filteredMoves.length === 0 && <h1>No moves found!</h1>}
             <div className="moves-gallery">
                 { filteredMoves.map( (move) => { 
                     return (
-                        <MyMove 
+                        <Move 
                             key={move.id} 
                             id={move.id} 
+                            userName= {move.user.name}
+                            userImage= {move.user.image_url}
                             title={move.title} 
                             description={move.description} 
                             date={move.date}
                             videoURL={move.videoURL} 
+                            onRated={handleOnRated}
+                            onSubmitRating={handleSubmitRating}
+                            isSubmitting={submittingMoveId === move.id}
                         />
                     );
                 }) } 
@@ -69,4 +102,4 @@ function MyMovesGallery(props) {
     )
 }
 
-export default MyMovesGallery;
+export default MovesGallery;

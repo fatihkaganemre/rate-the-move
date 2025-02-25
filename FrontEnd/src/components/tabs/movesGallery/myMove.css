@@ -26,6 +26,9 @@
 .myMove-info {
     text-align: center;
     width: 100%; /* Match the container width */
+    word-wrap: break-word; 
+    overflow-wrap: break-word; 
+    white-space: normal; 
 }
 
 /* Ensure all videos are the same size */
