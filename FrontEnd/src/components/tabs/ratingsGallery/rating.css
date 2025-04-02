@@ -98,6 +98,21 @@
     cursor: not-allowed;
 }
 
+.view-more-btn {
+    background: none;
+    border: none;
+    color: #007bff;
+    cursor: pointer;
+    font-size: 14px;
+    text-decoration: underline;
+    text-align: left; 
+    display: block;
+}
+
+.view-more-btn:hover {
+    color: #0056b3;
+}
+
 /* Loading spinner */
 .loader {
     width: 20px;
