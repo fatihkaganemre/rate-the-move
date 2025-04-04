@@ -3,6 +3,7 @@ import Loader from "../../common/Loader";
 import SearchComponent from "../../common/Search";
 import MyMove from "./MyMove";
 import './myMovesGallery.css'
+import { formatDate } from "../../../helpers/dateFormatter";
 
 function MyMovesGallery(props) {
     const [moves, setMoves] = useState([]);
@@ -82,13 +83,14 @@ function MyMovesGallery(props) {
             {!isLoading && filteredMoves.length === 0 && <h1>No moves found!</h1>}
             <div className="moves-gallery">
                 { filteredMoves.map( (move) => { 
+                    const date = formatDate(move.date);
                     return (
                         <MyMove 
                             key={move.id} 
                             id={move.id} 
                             title={move.title} 
                             description={move.description} 
-                            date={move.date}
+                            date={date}
                             videoURL={move.videoURL} 
                             isRemoving={isRemovingMoves.includes(move.id)}
                             onEdit={edit}

@@ -25,7 +25,7 @@ function Rating(props) {
                 <div>
                     <div className="user">
                         <img
-                            src={props.userImage}
+                            src={props.imageURL || "./user-placeholder.svg"}
                             alt="User Avatar"
                             width="50"
                             height="50"
@@ -36,7 +36,7 @@ function Rating(props) {
                     <div className="video-info">
                         <h5>{props.move.title}</h5>
                         <h6>{props.move.description}</h6>
-                        <div className="move-date">{props.move.date}</div>
+                        <div className="move-date">{props.date}</div>
                     </div>
                 </div>
                 <div className="line"></div>

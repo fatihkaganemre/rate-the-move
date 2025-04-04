@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Move from "./Move";
 import Loader from "../../common/Loader";
 import SearchComponent from "../../common/Search";
+import { formatDate } from "../../../helpers/dateFormatter";
 
 function MovesGallery() {
     const [moves, setMoves] = useState([]);
@@ -81,6 +82,8 @@ function MovesGallery() {
             {!isLoading && filteredMoves.length === 0 && <h1>No moves found!</h1>}
             <div className="moves-gallery">
                 { filteredMoves.map( (move) => { 
+                    const date = formatDate(move.date);
+
                     return (
                         <Move 
                             key={move.id} 
@@ -89,7 +92,7 @@ function MovesGallery() {
                             userImage= {move.user.image_url}
                             title={move.title} 
                             description={move.description} 
-                            date={move.date}
+                            date={date}
                             videoURL={move.videoURL} 
                             onRated={handleOnRated}
                             onSubmitRating={handleSubmitRating}

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Rating from "./Rating";
 import Loader from "../../common/Loader";
 import SearchComponent from "../../common/Search";
+import { formatDate } from "../../../helpers/dateFormatter";
 import './ratingsGallery.css';
 
 function RatingsGallery(props) {
@@ -47,6 +48,7 @@ function RatingsGallery(props) {
             {!isLoading && ratings.length === 0 && <h1>No ratings found!</h1>}
             <div className="ratings-gallery">   
                 { filteredRatings.map( (rating) => { 
+                    const date = formatDate(rating.move.date);
                     return (
                         <Rating 
                             key={rating.move.id} 
@@ -54,6 +56,7 @@ function RatingsGallery(props) {
                             userImage={rating.user.image_url}
                             userName={rating.user.name}
                             move={rating.move}
+                            date={date}
                             rates={rating.rates}
                         />
                     );
