@@ -1,4 +1,4 @@
-export function formatDate(isoString, locale = "en-GB", timeZone = "Europe/Warsaw") {
+export function formatDate(isoString, locale = "en-GB") {
     const date = new Date(isoString);
 
     return new Intl.DateTimeFormat(locale, {
@@ -7,6 +7,5 @@ export function formatDate(isoString, locale = "en-GB", timeZone = "Europe/Warsa
         day: "numeric",
         hour: "2-digit",
         minute: "2-digit",
-        timeZone,
     }).format(date);
 }
