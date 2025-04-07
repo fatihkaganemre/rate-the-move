@@ -1,4 +1,5 @@
 import React from "react";
+import VideoPlayer from "../../common/VideoPlayer";
 import './myMove.css';
 
 function MyMove(props) {
@@ -15,9 +16,7 @@ function MyMove(props) {
                     <div className="move-date">{props.date}</div>
                 </div>
             </div>
-            <video className="myMove-video" controls>
-                <source src={props.videoURL} type="video/mp4" />
-            </video>
+            <VideoPlayer src={props.videoURL} />
             <div>
                 <div onClick={remove} className="removeIcon">
                     { props.isRemoving ? (

@@ -84,6 +84,7 @@ function MyMovesGallery(props) {
             <div className="moves-gallery">
                 { filteredMoves.map( (move) => { 
                     const date = formatDate(move.date);
+                    console.log(move);
                     return (
                         <MyMove 
                             key={move.id} 

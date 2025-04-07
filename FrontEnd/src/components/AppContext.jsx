@@ -7,13 +7,11 @@ import useUser from '../hooks/useUser';
 function AppContent() {
   const { isLoading, isLoggedIn } = useUser();
 
-  return isLoading ? (
-    <Loader />
-  ) : (
-    <div>
-      {isLoggedIn ? (<LoggedInRoutes/>) : (<LoggedOutRoutes/> )}
-    </div>
-  );
+  if ((isLoading || isLoggedIn === null)) {
+    return <Loader />;
+  }
+  
+  return isLoggedIn ? <LoggedInRoutes /> : <LoggedOutRoutes />;
 }
 
 export default AppContent;

@@ -1,5 +1,6 @@
 import React from "react";
 import Stars from "../../common/Stars";
+import VideoPlayer from "../../common/VideoPlayer";
 import './move.css';
 
 function Move(props) {
@@ -13,6 +14,7 @@ function Move(props) {
 
     return (
         <div className="move">
+            <VideoPlayer src={props.videoURL} />
             <form disabled={props.isSubmitting} onSubmit={handleSubmit} className="form">
                 <div>
                     <div className="user">
@@ -31,9 +33,6 @@ function Move(props) {
                     {props.isSubmitting ? (<span className="loader"></span>) : "Submit"}
                 </button>
             </form>
-            <video className="video" controls>
-                <source src={props.videoURL} type="video/mp4" />
-            </video>
         </div>
     )
 };

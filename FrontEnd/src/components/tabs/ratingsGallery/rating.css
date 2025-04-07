@@ -1,13 +1,14 @@
 .move {
     display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
-    gap: 20px;
-    margin-bottom: 20px;
-    margin-left: 20px;
-    margin-right: 20px;
+    background-color: #50125c;
+    color: white;
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 25px;
+    width: 500px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
 }
 
 .line {
@@ -48,13 +49,6 @@
     align-items: center;
     float: left;
     margin-right: 20px;
-}
-
-.video {
-    height: auto;
-    border-radius: 20px;
-    width: 450px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional, for a polished look */
 }
 
 .form {

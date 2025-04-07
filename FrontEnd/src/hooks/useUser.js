@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useAuthContext } from '../contexts/AuthContext';
 import useAuth from './useAuth';
 
@@ -9,7 +8,6 @@ function useUser() {
   const { logout } = useAuth();
 
   useEffect(() => {
-    setIsLoading(true);
     checkAuthentication();
   }, []);
 
@@ -20,10 +18,11 @@ function useUser() {
       const data = await response.json();
       setUser(data.user);
       setIsLoggedIn(data.isLoggedIn);
-      setIsLoading(false);
     } catch (error) {
       clearUserData();
       console.error('Authentication check failed:', error);
+    } finally {
+      setIsLoading(false); 
     }
   };
 

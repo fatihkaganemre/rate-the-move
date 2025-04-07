@@ -51,7 +51,6 @@ function RatingsGallery(props) {
                     const date = formatDate(rating.move.date);
                     return (
                         <Rating 
-                            key={rating.move.id} 
                             id={rating.move.id} 
                             userImage={rating.user.image_url}
                             userName={rating.user.name}

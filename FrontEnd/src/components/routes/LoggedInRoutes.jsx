@@ -23,6 +23,7 @@ function LoggedInRoutes() {
   useEffect( () => {
     if (user) {
       setIsCompetitor(user.type === 'competitor');
+      navigateToMoves();
     }
   }, [user]);
 

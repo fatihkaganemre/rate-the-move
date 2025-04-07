@@ -3,12 +3,12 @@ import './profile.css'
 import ChangeEmail from "./ChangeEmail";
 import ChangePassword from "./ChangePassword";
 import ConfirmationPopup from "../common/ConfirmationPopup";
+import BackButton from "../common/BackButton";
 
 function Profile(props) {
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [imagePreview, setImagePreview] = useState(props.user.image_url || "./user-placeholder.svg");
     const fileInputRef = useRef(null);
-
     const confirmRemoveAccount = () => {
         setIsPopupOpen(false);
         removeAccount();
@@ -69,6 +69,7 @@ function Profile(props) {
     return (
         <div className="mainConteiner">
             <div className="profilePhotoName">
+                <BackButton/>
                 <h2 className="userName">{`${props.user.name.toUpperCase()} ${props.user.surname.toUpperCase()}`}</h2>
                 <div className="profileImageContainer">
                     <img

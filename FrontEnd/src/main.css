@@ -1,7 +1,7 @@
 html, body {
     background-color: #EEEEEE;
     height: 100%;
-    margin: 0; /* Remove default margin */
+    margin: 0; 
     padding: 0;
 }
 
@@ -66,8 +66,8 @@ textarea {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
+    justify-content: space-evenly;
+    gap: 50px;
     margin: 50px;
 }
 

@@ -31,16 +31,6 @@
     white-space: normal; 
 }
 
-/* Ensure all videos are the same size */
-.myMove-video {
-    width: 100%; /* Full width of the card */
-    height: 250px;
-    object-fit: fill; /* Ensures consistent aspect ratio */
-    border-radius: 10px;
-    margin: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
 .editIcon {
     position: absolute;
     bottom: -15px;

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import CommentsModal from "./ComentsModal";
+import VideoPlayer from "../../common/VideoPlayer";
 import "./rating.css";
 
 function Rating(props) {
@@ -21,6 +22,8 @@ function Rating(props) {
 
     return (
         <div className="move">
+            <VideoPlayer src={props.move.video_url} />
+
             <form className="form">
                 <div>
                     <div className="user">
@@ -57,10 +60,6 @@ function Rating(props) {
                     </button>
                 )}
             </form>
-
-            <video className="video" controls>
-                <source src={props.move.videoURL} type="video/mp4" />
-            </video>
 
             {/* Show Comments Modal when clicked */}
             {showModal && <CommentsModal comments={props.rates} onClose={() => setShowModal(false)} />}
